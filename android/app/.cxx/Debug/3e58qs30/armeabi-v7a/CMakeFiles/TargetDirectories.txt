@@ -1,0 +1,2 @@
+/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/.cxx/Debug/3e58qs30/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/.cxx/Debug/3e58qs30/armeabi-v7a/CMakeFiles/rebuild_cache.dir

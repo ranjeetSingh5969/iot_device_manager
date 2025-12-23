@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/agnext_dev/Downloads/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/agnext_dev/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/.cxx/Debug/3e58qs30/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/agnext_dev/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/.cxx/Debug/3e58qs30/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

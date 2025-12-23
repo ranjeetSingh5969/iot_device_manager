@@ -1,0 +1,47 @@
+com.iotdevicemanager.flutter.app-fragment-1.7.1-0 /Users/agnext_dev/.gradle/caches/transforms-3/075d9fc50423aac352c5e6b135d39dbb/transformed/fragment-1.7.1/res
+com.iotdevicemanager.flutter.app-transition-1.4.1-1 /Users/agnext_dev/.gradle/caches/transforms-3/091a11bea2b770ac85467ea847f1ea1c/transformed/transition-1.4.1/res
+com.iotdevicemanager.flutter.app-lifecycle-livedata-core-2.7.0-2 /Users/agnext_dev/.gradle/caches/transforms-3/0d4e0b64b351f3be78e1d75faa6f0fb0/transformed/lifecycle-livedata-core-2.7.0/res
+com.iotdevicemanager.flutter.app-jetified-profileinstaller-1.3.1-3 /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/res
+com.iotdevicemanager.flutter.app-appcompat-1.1.0-4 /Users/agnext_dev/.gradle/caches/transforms-3/1d41b15217135e8c61daa9a934be7308/transformed/appcompat-1.1.0/res
+com.iotdevicemanager.flutter.app-jetified-lifecycle-viewmodel-ktx-2.7.0-5 /Users/agnext_dev/.gradle/caches/transforms-3/1d4708b1ca9ebc0296d8689709cee89f/transformed/jetified-lifecycle-viewmodel-ktx-2.7.0/res
+com.iotdevicemanager.flutter.app-jetified-activity-ktx-1.8.1-6 /Users/agnext_dev/.gradle/caches/transforms-3/1ed66b9c024f19ccd40afbecaaf62a64/transformed/jetified-activity-ktx-1.8.1/res
+com.iotdevicemanager.flutter.app-jetified-datastore-release-7 /Users/agnext_dev/.gradle/caches/transforms-3/23e1469b244f7a39d787a7cdeb8a995f/transformed/jetified-datastore-release/res
+com.iotdevicemanager.flutter.app-jetified-window-java-1.2.0-8 /Users/agnext_dev/.gradle/caches/transforms-3/27085778bdebb0000c77f09203719401/transformed/jetified-window-java-1.2.0/res
+com.iotdevicemanager.flutter.app-jetified-lifecycle-process-2.7.0-9 /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/res
+com.iotdevicemanager.flutter.app-jetified-core-1.0.0-10 /Users/agnext_dev/.gradle/caches/transforms-3/3790f4c48149fdff339dbbf9aace3d01/transformed/jetified-core-1.0.0/res
+com.iotdevicemanager.flutter.app-jetified-datastore-core-release-11 /Users/agnext_dev/.gradle/caches/transforms-3/3de52418b7d26f521aa688645f272d14/transformed/jetified-datastore-core-release/res
+com.iotdevicemanager.flutter.app-lifecycle-runtime-2.7.0-12 /Users/agnext_dev/.gradle/caches/transforms-3/3e4d25e3008c69e1b451ed97f3ee088e/transformed/lifecycle-runtime-2.7.0/res
+com.iotdevicemanager.flutter.app-jetified-tracing-1.2.0-13 /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/res
+com.iotdevicemanager.flutter.app-jetified-window-1.2.0-14 /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/res
+com.iotdevicemanager.flutter.app-jetified-lifecycle-runtime-ktx-2.7.0-15 /Users/agnext_dev/.gradle/caches/transforms-3/4fb22757cb68c2a2cf3ed63d632749ca/transformed/jetified-lifecycle-runtime-ktx-2.7.0/res
+com.iotdevicemanager.flutter.app-lifecycle-livedata-2.7.0-16 /Users/agnext_dev/.gradle/caches/transforms-3/52602769ae0bb094236cfafc92282ee0/transformed/lifecycle-livedata-2.7.0/res
+com.iotdevicemanager.flutter.app-jetified-lifecycle-livedata-core-ktx-2.7.0-17 /Users/agnext_dev/.gradle/caches/transforms-3/68a56c7fc4c07a8650e84a9b9a955936/transformed/jetified-lifecycle-livedata-core-ktx-2.7.0/res
+com.iotdevicemanager.flutter.app-coordinatorlayout-1.0.0-18 /Users/agnext_dev/.gradle/caches/transforms-3/7610357253defa8ff9c1ab4b7a7851f2/transformed/coordinatorlayout-1.0.0/res
+com.iotdevicemanager.flutter.app-jetified-activity-1.8.1-19 /Users/agnext_dev/.gradle/caches/transforms-3/797731fbf9753c97868cae8135147a40/transformed/jetified-activity-1.8.1/res
+com.iotdevicemanager.flutter.app-jetified-datastore-preferences-core-release-20 /Users/agnext_dev/.gradle/caches/transforms-3/7bfa6bcfd7d83a03b6f32c33bbbd6cdc/transformed/jetified-datastore-preferences-core-release/res
+com.iotdevicemanager.flutter.app-core-1.13.1-21 /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/res
+com.iotdevicemanager.flutter.app-jetified-fragment-ktx-1.7.1-22 /Users/agnext_dev/.gradle/caches/transforms-3/9531f091d9dd29d32f3ce992aed18f4b/transformed/jetified-fragment-ktx-1.7.1/res
+com.iotdevicemanager.flutter.app-slidingpanelayout-1.2.0-23 /Users/agnext_dev/.gradle/caches/transforms-3/9ed1eaf12f319ffcf37352887643c5ed/transformed/slidingpanelayout-1.2.0/res
+com.iotdevicemanager.flutter.app-jetified-savedstate-ktx-1.2.1-24 /Users/agnext_dev/.gradle/caches/transforms-3/a042cc023d14741731ef03baf3870f48/transformed/jetified-savedstate-ktx-1.2.1/res
+com.iotdevicemanager.flutter.app-jetified-startup-runtime-1.1.1-25 /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/res
+com.iotdevicemanager.flutter.app-jetified-core-ktx-1.13.1-26 /Users/agnext_dev/.gradle/caches/transforms-3/ac80e92cabec0424de86f7beda3e52a1/transformed/jetified-core-ktx-1.13.1/res
+com.iotdevicemanager.flutter.app-jetified-datastore-preferences-release-27 /Users/agnext_dev/.gradle/caches/transforms-3/b4fd9899f9c1f8af2cb4f6696d8e1e83/transformed/jetified-datastore-preferences-release/res
+com.iotdevicemanager.flutter.app-core-runtime-2.2.0-28 /Users/agnext_dev/.gradle/caches/transforms-3/be92f2ac600ba5bb2eb5b4d3a4fdf866/transformed/core-runtime-2.2.0/res
+com.iotdevicemanager.flutter.app-preference-1.2.1-29 /Users/agnext_dev/.gradle/caches/transforms-3/bf7e05d0e1a43384e25cc75c5d0c0f31/transformed/preference-1.2.1/res
+com.iotdevicemanager.flutter.app-jetified-appcompat-resources-1.1.0-30 /Users/agnext_dev/.gradle/caches/transforms-3/c9941042dae7daadf5182c0f06ba8a16/transformed/jetified-appcompat-resources-1.1.0/res
+com.iotdevicemanager.flutter.app-jetified-annotation-experimental-1.4.0-31 /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/res
+com.iotdevicemanager.flutter.app-recyclerview-1.0.0-32 /Users/agnext_dev/.gradle/caches/transforms-3/d8865a53009b6574f637f8a2182d4054/transformed/recyclerview-1.0.0/res
+com.iotdevicemanager.flutter.app-jetified-lifecycle-viewmodel-savedstate-2.7.0-33 /Users/agnext_dev/.gradle/caches/transforms-3/e0b6c0da08de0c09f59e977897b3af94/transformed/jetified-lifecycle-viewmodel-savedstate-2.7.0/res
+com.iotdevicemanager.flutter.app-lifecycle-viewmodel-2.7.0-34 /Users/agnext_dev/.gradle/caches/transforms-3/e0ca673fd090e4574a2d5fe6ece86eea/transformed/lifecycle-viewmodel-2.7.0/res
+com.iotdevicemanager.flutter.app-jetified-savedstate-1.2.1-35 /Users/agnext_dev/.gradle/caches/transforms-3/fdc06e9454ef9757ded46041baae3993/transformed/jetified-savedstate-1.2.1/res
+com.iotdevicemanager.flutter.app-debug-36 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/debug/res
+com.iotdevicemanager.flutter.app-main-37 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/res
+com.iotdevicemanager.flutter.app-pngs-38 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/generated/res/pngs/debug
+com.iotdevicemanager.flutter.app-resValues-39 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/generated/res/resValues/debug
+com.iotdevicemanager.flutter.app-packageDebugResources-40 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.iotdevicemanager.flutter.app-packageDebugResources-41 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.iotdevicemanager.flutter.app-merged_res-42 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/intermediates/merged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-43 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/flutter_blue_plus_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-44 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/permission_handler_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-45 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/shared_preferences_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-46 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/sqflite_android/intermediates/packaged_res/debug

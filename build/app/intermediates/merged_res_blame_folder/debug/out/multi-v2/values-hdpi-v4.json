@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.iotdevicemanager.flutter.app-mergeDebugResources-40:/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/Users/agnext_dev/.gradle/caches/transforms-3/1d41b15217135e8c61daa9a934be7308/transformed/appcompat-1.1.0/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    }
+                }
+            ]
+        }
+    ]
+}
