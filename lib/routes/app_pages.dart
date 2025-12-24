@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import '../screens/login_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/live_dashboard_screen.dart';
+import '../screens/new_device_screen.dart';
+import '../screens/download_data_screen.dart';
+import '../screens/onboarding_screen.dart';
 import '../screens/device_list_screen.dart';
 import '../screens/ble_scan_screen.dart';
 import '../screens/device_info_screen.dart';
@@ -10,6 +13,9 @@ import '../screens/history_screen.dart';
 import '../screens/data_sync_screen.dart';
 import '../bindings/auth_binding.dart';
 import '../bindings/dashboard_binding.dart';
+import '../bindings/new_device_binding.dart';
+import '../bindings/download_data_binding.dart';
+import '../bindings/onboarding_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -31,6 +37,21 @@ class AppPages {
       name: AppRoutes.liveDashboard,
       page: () => const LiveDashboardScreen(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.newDevice,
+      page: () => const NewDeviceScreen(),
+      binding: NewDeviceBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.downloadData,
+      page: () => const DownloadDataScreen(),
+      binding: DownloadDataBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.onboarding,
+      page: () => const OnboardingScreen(),
+      binding: OnboardingBinding(),
     ),
     GetPage(
       name: AppRoutes.deviceList,

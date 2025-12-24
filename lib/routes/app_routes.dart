@@ -5,6 +5,9 @@ class AppRoutes {
   static const String login = '/login';
   static const String home = '/home';
   static const String liveDashboard = '/live-dashboard';
+  static const String newDevice = '/new-device';
+  static const String downloadData = '/download-data';
+  static const String onboarding = '/onboarding';
   static const String deviceList = '/device-list';
   static const String bleScan = '/ble-scan';
   static const String deviceInfo = '/device-info';

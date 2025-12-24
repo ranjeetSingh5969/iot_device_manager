@@ -149,7 +149,7 @@ class _DataSyncScreenState extends State<DataSyncScreen> {
                   backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
               ] else if (_syncComplete) ...[
-                Icon(
+                const Icon(
                   Icons.check_circle,
                   size: 80,
                   color: AppColors.success,

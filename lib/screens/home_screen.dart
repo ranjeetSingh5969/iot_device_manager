@@ -177,7 +177,7 @@ class HomeScreen extends StatelessWidget {
                 title: 'New Device',
                 description: 'Connect and onboard new IoT devices via Bluetooth',
                 onTap: () {
-                  Get.toNamed(AppRoutes.bleScan);
+                  Get.toNamed(AppRoutes.newDevice);
                 },
               ),
               const SizedBox(height: AppDimensions.spacingMedium),
@@ -197,7 +197,7 @@ class HomeScreen extends StatelessWidget {
                 title: 'Download Data',
                 description: 'Export and upload sensor data to cloud',
                 onTap: () {
-                  // TODO: Navigate to download data screen
+                  Get.toNamed(AppRoutes.downloadData);
                 },
               ),
               const SizedBox(height: AppDimensions.spacingMedium),
@@ -217,7 +217,7 @@ class HomeScreen extends StatelessWidget {
                 title: 'Onboarding',
                 description: 'Register new devices and configure trips',
                 onTap: () {
-                  // TODO: Navigate to onboarding screen
+                  Get.toNamed(AppRoutes.onboarding);
                 },
               ),
               const SizedBox(height: AppDimensions.spacingMedium),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/dashboard_controller.dart';
-import '../models/device.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
 
