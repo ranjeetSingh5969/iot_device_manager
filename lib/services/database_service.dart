@@ -173,4 +173,73 @@ class DatabaseService {
   Future<void> clearReadings(String deviceId) async {
     await db.delete('sensor_readings', where: 'deviceId = ?', whereArgs: [deviceId]);
   }
+
+  // Trip operations
+  Future<List<Map<String, dynamic>>> getAllTrips() async {
+    return await db.query('trips', orderBy: 'id DESC');
+  }
+
+  Future<int> insertTrip({
+    required String startLocation,
+    required String endLocation,
+    required String transportMode,
+    required int startDate,
+    required double tempLow,
+    required double tempHigh,
+    required double humidityLow,
+    required double humidityHigh,
+    required String clientName,
+  }) async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    return await db.insert(
+      'trips',
+      {
+        'startLocation': startLocation,
+        'endLocation': endLocation,
+        'transportMode': transportMode,
+        'startDate': startDate,
+        'tempLow': tempLow,
+        'tempHigh': tempHigh,
+        'humidityLow': humidityLow,
+        'humidityHigh': humidityHigh,
+        'clientName': clientName,
+        'createdAt': now,
+      },
+    );
+  }
+
+  Future<void> insertTripSensor({
+    required int tripId,
+    required String deviceId,
+  }) async {
+    await db.insert(
+      'trip_sensors',
+      {
+        'tripId': tripId,
+        'deviceId': deviceId,
+      },
+    );
+  }
+
+  Future<void> insertTripSensors({
+    required int tripId,
+    required List<String> deviceIds,
+  }) async {
+    final batch = db.batch();
+    for (final deviceId in deviceIds) {
+      batch.insert(
+        'trip_sensors',
+        {
+          'tripId': tripId,
+          'deviceId': deviceId,
+        },
+      );
+    }
+    await batch.commit(noResult: true);
+  }
+
+  // Alias for getDevices to match controller expectations
+  Future<List<Device>> getAllDevices() async {
+    return await getDevices();
+  }
 }

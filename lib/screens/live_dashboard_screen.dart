@@ -215,6 +215,7 @@ class LiveDashboardScreen extends StatelessWidget {
   void _showDeviceSelectionDialog(DashboardController controller) {
     Get.dialog(
       Dialog(
+        backgroundColor: AppColors.backgroundWhite,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
         ),
@@ -233,28 +234,61 @@ class LiveDashboardScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppDimensions.spacingLarge),
-              Obx(() => ListView.builder(
-                shrinkWrap: true,
-                itemCount: controller.availableDevices.length,
-                itemBuilder: (context, index) {
-                  final device = controller.availableDevices[index];
-                  final isSelected = controller.selectedDevices.contains(device);
-                  return CheckboxListTile(
-                    title: Text(device.displayName),
-                    subtitle: Text(device.macAddress),
-                    value: isSelected,
-                    onChanged: (value) => controller.toggleDevice(device),
-                    activeColor: AppColors.primaryBlue,
+              Obx(() {
+                if (controller.availableDevices.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.all(AppDimensions.paddingLarge),
+                    child: Center(
+                      child: Text(
+                        'No devices available',
+                        style: TextStyle(
+                          color: AppColors.textGrey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
                   );
-                },
-              )),
+                }
+                return ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 400),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.availableDevices.length,
+                    itemBuilder: (context, index) {
+                      final device = controller.availableDevices[index];
+                      return Obx(() {
+                        final isSelected = controller.selectedDevices.any((d) => d.id == device.id);
+                        return CheckboxListTile(
+                          title: Text(
+                            device.displayName,
+                            style: const TextStyle(color: AppColors.textBlack),
+                          ),
+                          subtitle: Text(
+                            device.macAddress,
+                            style: const TextStyle(color: AppColors.textGrey),
+                          ),
+                          value: isSelected,
+                          onChanged: (value) => controller.toggleDevice(device),
+                          activeColor: AppColors.primaryBlue,
+                        );
+                      });
+                    },
+                  ),
+                );
+              }),
               const SizedBox(height: AppDimensions.spacingLarge),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Get.back(),
-                    child: const Text('Done'),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -262,6 +296,7 @@ class LiveDashboardScreen extends StatelessWidget {
           ),
         ),
       ),
+      barrierColor: Colors.black54,
     );
   }
 

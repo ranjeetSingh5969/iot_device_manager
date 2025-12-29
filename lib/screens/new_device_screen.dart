@@ -40,7 +40,7 @@ class NewDeviceScreen extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (controller.selectedTab.value == DeviceTab.onboarded) {
-                return _buildOnboardedDevicesList(controller);
+                return _buildOnboardedDevicesList(controller, bleController);
               } else {
                 return _buildNearbyDevicesList(controller, bleController);
               }
@@ -107,7 +107,10 @@ class NewDeviceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOnboardedDevicesList(NewDeviceController controller) {
+  Widget _buildOnboardedDevicesList(
+    NewDeviceController controller,
+    BleController bleController,
+  ) {
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -141,6 +144,8 @@ class NewDeviceScreen extends StatelessWidget {
           final device = controller.onboardedDevices[index];
           return _buildDeviceTile(
             device: device,
+            bleController: bleController,
+            controller: controller,
             onSwipe: () {},
           );
         },
@@ -206,6 +211,8 @@ class NewDeviceScreen extends StatelessWidget {
           final bleDevice = bleController.discoveredDevices[index];
           return _buildBleDeviceTile(
             bleDevice: bleDevice,
+            bleController: bleController,
+            controller: controller,
             onSwipe: () {},
           );
         },
@@ -215,87 +222,220 @@ class NewDeviceScreen extends StatelessWidget {
 
   Widget _buildDeviceTile({
     required Device device,
+    required BleController bleController,
+    required NewDeviceController controller,
     required VoidCallback onSwipe,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundWhite,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        border: Border.all(color: AppColors.borderGrey),
-      ),
-      child: ListTile(
-        leading: Container(
-          width: 12,
-          height: 12,
-          decoration: const BoxDecoration(
-            color: AppColors.secondaryGreen,
-            shape: BoxShape.circle,
+    return GetBuilder<BleController>(
+      builder: (bleCtrl) {
+        final isConnected = bleCtrl.isConnected &&
+            bleCtrl.connectedDevice.value?.macAddress.toUpperCase() ==
+                device.macAddress.toUpperCase();
+        return Container(
+          margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundWhite,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+            border: Border.all(color: AppColors.borderGrey),
           ),
-        ),
-        title: Text(
-          device.displayName,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textBlack,
+          child: ListTile(
+            leading: Container(
+              width: 12,
+              height: 12,
+              decoration: BoxDecoration(
+                color: isConnected
+                    ? AppColors.secondaryGreen
+                    : AppColors.textGreyLight,
+                shape: BoxShape.circle,
+              ),
+            ),
+            title: Text(
+              device.displayName,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textBlack,
+              ),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  device.macAddress,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textGrey,
+                  ),
+                ),
+                if (isConnected)
+                  const Text(
+                    'Connected',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.secondaryGreen,
+                    ),
+                  ),
+              ],
+            ),
+            trailing: isConnected
+                ? TextButton(
+                    onPressed: () async {
+                      await bleController.disconnect();
+                      Get.snackbar(
+                        'Disconnected',
+                        'Disconnected from ${device.displayName}',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    },
+                    child: const Text(
+                      'Disconnect',
+                      style: TextStyle(
+                        color: AppColors.error,
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+                : ElevatedButton(
+                    onPressed: () async {
+                      await controller.connectToDevice(device);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryBlue,
+                      foregroundColor: AppColors.textWhite,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingMedium,
+                        vertical: AppDimensions.paddingSmall,
+                      ),
+                    ),
+                    child: const Text(
+                      'View Dashboard',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
           ),
-        ),
-        subtitle: Text(
-          device.id,
-          style: const TextStyle(
-            fontSize: 14,
-            color: AppColors.textGrey,
-          ),
-        ),
-        trailing: const Icon(
-          Icons.chevron_right,
-          color: AppColors.textGrey,
-        ),
-      ),
+        );
+      },
     );
   }
 
   Widget _buildBleDeviceTile({
     required BleDevice bleDevice,
+    required BleController bleController,
+    required NewDeviceController controller,
     required VoidCallback onSwipe,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
-      decoration: BoxDecoration(
-        color: AppColors.backgroundWhite,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        border: Border.all(color: AppColors.borderGrey),
-      ),
-      child: ListTile(
-        leading: Container(
-          width: 12,
-          height: 12,
-          decoration: const BoxDecoration(
-            color: AppColors.secondaryGreen,
-            shape: BoxShape.circle,
+    return GetBuilder<BleController>(
+      builder: (bleCtrl) {
+        final isConnected = bleCtrl.isConnected &&
+            bleCtrl.connectedDevice.value?.macAddress.toUpperCase() ==
+                bleDevice.macAddress.toUpperCase();
+        final isConnecting = bleCtrl.connectionState.value ==
+            BleConnectionState.connecting ||
+            bleCtrl.connectionState.value == BleConnectionState.discoveringServices;
+        return Container(
+          margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundWhite,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+            border: Border.all(color: AppColors.borderGrey),
           ),
-        ),
-        title: Text(
-          bleDevice.name,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textBlack,
+          child: ListTile(
+            leading: Container(
+              width: 12,
+              height: 12,
+              decoration: BoxDecoration(
+                color: isConnected
+                    ? AppColors.secondaryGreen
+                    : AppColors.textGreyLight,
+                shape: BoxShape.circle,
+              ),
+            ),
+            title: Text(
+              bleDevice.name,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textBlack,
+              ),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  bleDevice.macAddress,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textGrey,
+                  ),
+                ),
+                if (isConnected)
+                  const Text(
+                    'Connected',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.secondaryGreen,
+                    ),
+                  )
+                else if (isConnecting)
+                  const Text(
+                    'Connecting...',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.primaryBlue,
+                    ),
+                  ),
+              ],
+            ),
+            trailing: isConnected
+                ? TextButton(
+                    onPressed: () async {
+                      await bleController.disconnect();
+                      Get.snackbar(
+                        'Disconnected',
+                        'Disconnected from ${bleDevice.name}',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    },
+                    child: const Text(
+                      'Disconnect',
+                      style: TextStyle(
+                        color: AppColors.error,
+                        fontSize: 14,
+                      ),
+                    ),
+                  )
+                : ElevatedButton(
+                    onPressed: isConnecting
+                        ? null
+                        : () async {
+                            await controller.connectToNearbyDevice(bleDevice);
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryBlue,
+                      foregroundColor: AppColors.textWhite,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingMedium,
+                        vertical: AppDimensions.paddingSmall,
+                      ),
+                    ),
+                    child: isConnecting
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(AppColors.textWhite),
+                            ),
+                          )
+                        : const Text(
+                            'Connect',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                  ),
           ),
-        ),
-        subtitle: Text(
-          bleDevice.macAddress,
-          style: const TextStyle(
-            fontSize: 14,
-            color: AppColors.textGrey,
-          ),
-        ),
-        trailing: const Icon(
-          Icons.chevron_right,
-          color: AppColors.textGrey,
-        ),
-      ),
+        );
+      },
     );
   }
 }

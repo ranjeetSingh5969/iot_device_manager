@@ -197,8 +197,7 @@ class OnboardingScreen extends StatelessWidget {
         _buildTextField(
           label: 'Start Location',
           hintText: 'e.g. New York',
-          value: controller.startLocation.value,
-          onChanged: controller.setStartLocation,
+          controller: controller.startLocationController,
           errorText: controller.startLocationError.value.isEmpty
               ? null
               : controller.startLocationError.value,
@@ -207,8 +206,7 @@ class OnboardingScreen extends StatelessWidget {
         _buildTextField(
           label: 'End Location',
           hintText: 'e.g. London',
-          value: controller.endLocation.value,
-          onChanged: controller.setEndLocation,
+          controller: controller.endLocationController,
           errorText: controller.endLocationError.value.isEmpty
               ? null
               : controller.endLocationError.value,
@@ -225,8 +223,7 @@ class OnboardingScreen extends StatelessWidget {
         _buildTextField(
           label: 'Client Name',
           hintText: 'Enter client name',
-          value: controller.clientName.value,
-          onChanged: controller.setClientName,
+          controller: controller.clientNameController,
           errorText: controller.clientNameError.value.isEmpty
               ? null
               : controller.clientNameError.value,
@@ -236,12 +233,16 @@ class OnboardingScreen extends StatelessWidget {
         const SizedBox(height: AppDimensions.spacingXLarge),
         SizedBox(
           width: double.infinity,
-          height: AppDimensions.buttonHeightLarge,
           child: ElevatedButton(
             onPressed: controller.saveTrip,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
               foregroundColor: AppColors.textWhite,
+              minimumSize: const Size(double.infinity, AppDimensions.buttonHeightLarge),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimensions.paddingMedium,
+                vertical: AppDimensions.paddingMedium,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
               ),
@@ -252,6 +253,8 @@ class OnboardingScreen extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
+              overflow: TextOverflow.visible,
+              softWrap: true,
             ),
           ),
         ),
@@ -280,8 +283,6 @@ class OnboardingScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppDimensions.spacingXLarge),
-        _buildBluetoothSection(controller),
-        const SizedBox(height: AppDimensions.spacingLarge),
         Obx(() => _buildMacAddressField(
           label: 'MAC Address',
           hintText: 'XX:XX:XX:XX:XX:XX',
@@ -294,8 +295,7 @@ class OnboardingScreen extends StatelessWidget {
         Obx(() => _buildTextField(
           label: 'Sensor Number',
           hintText: 'Enter sensor number',
-          value: controller.sensorNumber.value,
-          onChanged: controller.setSensorNumber,
+          controller: controller.sensorNumberController,
           keyboardType: TextInputType.number,
           errorText: controller.sensorNumberError.value.isEmpty
               ? null
@@ -304,12 +304,16 @@ class OnboardingScreen extends StatelessWidget {
         const SizedBox(height: AppDimensions.spacingXLarge),
         SizedBox(
           width: double.infinity,
-          height: AppDimensions.buttonHeightLarge,
           child: ElevatedButton(
             onPressed: controller.saveDeviceDetails,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBlue,
               foregroundColor: AppColors.textWhite,
+              minimumSize: const Size(double.infinity, AppDimensions.buttonHeightLarge),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimensions.paddingMedium,
+                vertical: AppDimensions.paddingMedium,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
               ),
@@ -320,6 +324,8 @@ class OnboardingScreen extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
+              overflow: TextOverflow.visible,
+              softWrap: true,
             ),
           ),
         ),
@@ -393,82 +399,6 @@ class OnboardingScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBluetoothSection(OnboardingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Bluetooth',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textBlack,
-              ),
-            ),
-            Obx(() => Switch(
-              value: controller.isBluetoothEnabled.value,
-              onChanged: (value) {
-                controller.toggleBluetooth();
-              },
-              activeColor: AppColors.primaryBlue,
-            )),
-          ],
-        ),
-        const SizedBox(height: AppDimensions.spacingMedium),
-        Obx(() => SizedBox(
-          width: double.infinity,
-          height: AppDimensions.buttonHeightLarge,
-          child: ElevatedButton.icon(
-            onPressed: controller.isBluetoothEnabled.value
-                ? controller.scanAndConnectBluetooth
-                : () {
-                    Get.snackbar(
-                      'Bluetooth Off',
-                      'Please turn on Bluetooth to connect to devices',
-                      snackPosition: SnackPosition.BOTTOM,
-                      duration: const Duration(seconds: 3),
-                      backgroundColor: AppColors.error,
-                      colorText: AppColors.textWhite,
-                    );
-                  },
-            icon: controller.isScanningBluetooth.value
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.textWhite),
-                    ),
-                  )
-                : const Icon(Icons.bluetooth, color: AppColors.textWhite),
-            label: Text(
-              controller.isScanningBluetooth.value
-                  ? 'Scanning...'
-                  : 'Connect with Bluetooth Device',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textWhite,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: controller.isBluetoothEnabled.value
-                  ? AppColors.primaryBlue
-                  : AppColors.textGrey,
-              foregroundColor: AppColors.textWhite,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
-              ),
-            ),
-          ),
-        )),
-      ],
-    );
-  }
-
   Widget _buildMacAddressField({
     required String label,
     required String hintText,
@@ -523,12 +453,10 @@ class OnboardingScreen extends StatelessWidget {
   Widget _buildTextField({
     required String label,
     required String hintText,
-    required String value,
-    required Function(String) onChanged,
+    required TextEditingController controller,
     String? errorText,
     TextInputType? keyboardType,
   }) {
-    final controller = TextEditingController(text: value);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -543,7 +471,6 @@ class OnboardingScreen extends StatelessWidget {
         const SizedBox(height: AppDimensions.spacingSmall),
         TextField(
           controller: controller,
-          onChanged: onChanged,
           keyboardType: keyboardType,
           style: const TextStyle(color: AppColors.textBlack),
           decoration: InputDecoration(
@@ -592,6 +519,8 @@ class OnboardingScreen extends StatelessWidget {
           child: DropdownButtonFormField<TransportMode>(
             value: controller.transportMode.value,
             decoration: InputDecoration(
+              filled: true,
+              fillColor: AppColors.backgroundGrey,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
                 borderSide: BorderSide.none,
@@ -608,8 +537,10 @@ class OnboardingScreen extends StatelessWidget {
                 borderSide: const BorderSide(color: AppColors.error, width: 2),
               ),
               contentPadding: const EdgeInsets.all(AppDimensions.inputPadding),
-              suffixIcon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textGrey),
-            ),
+            //   suffixIcon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textGrey),
+             ),
+            dropdownColor: AppColors.backgroundWhite,
+            style: const TextStyle(color: AppColors.textBlack),
             hint: const Text(
               'Select transport mode',
               style: TextStyle(color: AppColors.textGrey),
@@ -624,6 +555,7 @@ class OnboardingScreen extends StatelessWidget {
               );
             }).toList(),
             onChanged: controller.setTransportMode,
+            icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textGrey),
           ),
         )),
       ],
@@ -715,8 +647,7 @@ class OnboardingScreen extends StatelessWidget {
             Expanded(
               child: _buildLimitField(
                 hintText: 'Lower',
-                value: controller.tempLower.value,
-                onChanged: controller.setTempLower,
+                controller: controller.tempLowerController,
                 errorText: controller.tempLowerError.value.isEmpty
                     ? null
                     : controller.tempLowerError.value,
@@ -735,8 +666,7 @@ class OnboardingScreen extends StatelessWidget {
             Expanded(
               child: _buildLimitField(
                 hintText: 'Higher',
-                value: controller.tempHigher.value,
-                onChanged: controller.setTempHigher,
+                controller: controller.tempHigherController,
                 errorText: controller.tempHigherError.value.isEmpty
                     ? null
                     : controller.tempHigherError.value,
@@ -766,8 +696,7 @@ class OnboardingScreen extends StatelessWidget {
             Expanded(
               child: _buildLimitField(
                 hintText: 'Lower',
-                value: controller.humidityLower.value,
-                onChanged: controller.setHumidityLower,
+                controller: controller.humidityLowerController,
                 errorText: controller.humidityLowerError.value.isEmpty
                     ? null
                     : controller.humidityLowerError.value,
@@ -786,8 +715,7 @@ class OnboardingScreen extends StatelessWidget {
             Expanded(
               child: _buildLimitField(
                 hintText: 'Higher',
-                value: controller.humidityHigher.value,
-                onChanged: controller.setHumidityHigher,
+                controller: controller.humidityHigherController,
                 errorText: controller.humidityHigherError.value.isEmpty
                     ? null
                     : controller.humidityHigherError.value,
@@ -801,12 +729,11 @@ class OnboardingScreen extends StatelessWidget {
 
   Widget _buildLimitField({
     required String hintText,
-    required String value,
-    required Function(String) onChanged,
+    required TextEditingController controller,
     String? errorText,
   }) {
     return TextField(
-      onChanged: onChanged,
+      controller: controller,
       keyboardType: TextInputType.number,
       style: const TextStyle(color: AppColors.textBlack),
       decoration: InputDecoration(

@@ -48,11 +48,14 @@ class DashboardController extends GetxController {
   }
 
   void toggleDevice(Device device) {
-    if (selectedDevices.contains(device)) {
-      selectedDevices.remove(device);
+    final currentList = List<Device>.from(selectedDevices);
+    final deviceIndex = currentList.indexWhere((d) => d.id == device.id);
+    if (deviceIndex >= 0) {
+      currentList.removeAt(deviceIndex);
     } else {
-      selectedDevices.add(device);
+      currentList.add(device);
     }
+    selectedDevices.value = currentList;
     loadChartData();
   }
 

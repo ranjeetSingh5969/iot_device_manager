@@ -14,5 +14,6 @@ class AppRoutes {
   static const String dashboard = '/dashboard';
   static const String history = '/history';
   static const String dataSync = '/data-sync';
+  static const String reportGenerator = '/report-generator';
 }
 

@@ -305,13 +305,17 @@ class LoginScreen extends StatelessWidget {
                     Obx(() {
                       return SizedBox(
                         width: double.infinity,
-                        height: AppDimensions.buttonHeightLarge,
                         child: ElevatedButton(
                           onPressed: authController.isLoading.value ? null : authController.login,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.buttonBlue,
                             foregroundColor: AppColors.textWhite,
                             disabledBackgroundColor: AppColors.buttonGrey,
+                            minimumSize: const Size(double.infinity, AppDimensions.buttonHeightLarge),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppDimensions.paddingMedium,
+                              vertical: AppDimensions.paddingMedium,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(AppDimensions.radiusXLarge),
                             ),
@@ -335,6 +339,8 @@ class LoginScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 0.5,
                                   ),
+                                  overflow: TextOverflow.visible,
+                                  softWrap: true,
                                 ),
                         ),
                       );

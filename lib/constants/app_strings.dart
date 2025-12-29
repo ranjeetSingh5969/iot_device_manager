@@ -52,6 +52,16 @@ class AppStrings {
   static const String syncComplete = 'Sync Complete';
   static const String syncFailed = 'Sync Failed';
 
+  // Report Generator
+  static const String reportGenerator = 'Report Generator';
+  static const String generateReport = 'Generate Report';
+  static const String selectConsignment = 'Select Consignment';
+  static const String selectSensors = 'Select Sensors';
+  static const String selectAll = 'Select All';
+  static const String clear = 'Clear';
+  static const String sensorsSelected = 'sensor(s) selected';
+  static const String generatingReport = 'Generating Report...';
+
   // Common
   static const String loading = 'Loading...';
   static const String error = 'Error';

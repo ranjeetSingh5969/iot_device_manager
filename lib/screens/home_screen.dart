@@ -227,7 +227,7 @@ class HomeScreen extends StatelessWidget {
                 title: 'Report Generator',
                 description: 'Generate daily sensor reports with alerts',
                 onTap: () {
-                  // TODO: Navigate to report generator screen
+                  Get.toNamed(AppRoutes.reportGenerator);
                 },
               ),
             ],

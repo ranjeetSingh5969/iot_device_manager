@@ -11,11 +11,13 @@ import '../screens/device_info_screen.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/history_screen.dart';
 import '../screens/data_sync_screen.dart';
+import '../screens/report_generator_screen.dart';
 import '../bindings/auth_binding.dart';
 import '../bindings/dashboard_binding.dart';
 import '../bindings/new_device_binding.dart';
 import '../bindings/download_data_binding.dart';
 import '../bindings/onboarding_binding.dart';
+import '../bindings/report_generator_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -88,6 +90,11 @@ class AppPages {
         final device = Get.arguments;
         return DataSyncScreen(device: device);
       },
+    ),
+    GetPage(
+      name: AppRoutes.reportGenerator,
+      page: () => const ReportGeneratorScreen(),
+      binding: ReportGeneratorBinding(),
     ),
   ];
 }

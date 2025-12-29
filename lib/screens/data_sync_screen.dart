@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../constants/app_dimensions.dart';
 import '../models/device.dart';
 import '../controllers/ble_controller.dart';
 import '../services/database_service.dart';
@@ -226,9 +227,17 @@ class _DataSyncScreenState extends State<DataSyncScreen> {
                       child: ElevatedButton.icon(
                         onPressed: bleController.isConnected ? _startSync : null,
                         icon: const Icon(Icons.sync),
-                        label: const Text('Send "data" Command'),
+                        label: const Text(
+                          'Send "data" Command',
+                          overflow: TextOverflow.visible,
+                          softWrap: true,
+                        ),
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          minimumSize: const Size(double.infinity, AppDimensions.buttonHeightLarge),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimensions.paddingMedium,
+                            vertical: AppDimensions.paddingMedium,
+                          ),
                         ),
                       ),
                     );

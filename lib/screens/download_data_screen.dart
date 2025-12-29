@@ -473,11 +473,19 @@ class DownloadDataScreen extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () => controller.uploadDevice(index),
                     icon: const Icon(Icons.cloud_upload, size: 18),
-                    label: const Text('Upload to Cloud'),
+                    label: const Text(
+                      'Upload to Cloud',
+                      overflow: TextOverflow.visible,
+                      softWrap: true,
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       foregroundColor: AppColors.textWhite,
-                      padding: const EdgeInsets.all(AppDimensions.paddingMedium),
+                      minimumSize: const Size(double.infinity, AppDimensions.buttonHeightMedium),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimensions.paddingMedium,
+                        vertical: AppDimensions.paddingMedium,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
                       ),

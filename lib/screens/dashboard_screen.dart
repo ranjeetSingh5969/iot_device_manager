@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../constants/app_dimensions.dart';
 import '../models/device.dart';
 import '../models/sensor_reading.dart';
 import '../controllers/ble_controller.dart';
@@ -245,11 +246,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
         OutlinedButton.icon(
           onPressed: _disconnect,
           icon: const Icon(Icons.bluetooth_disabled),
-          label: const Text(AppStrings.disconnect),
+          label: const Text(
+            AppStrings.disconnect,
+            overflow: TextOverflow.visible,
+            softWrap: true,
+          ),
           style: OutlinedButton.styleFrom(
             foregroundColor: Theme.of(context).colorScheme.error,
             side: BorderSide(color: Theme.of(context).colorScheme.error),
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            minimumSize: const Size(double.infinity, AppDimensions.buttonHeightMedium),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimensions.paddingMedium,
+              vertical: AppDimensions.paddingMedium,
+            ),
           ),
         ),
       ],
@@ -297,9 +306,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon),
-      label: Text(label),
+      label: Text(
+        label,
+        overflow: TextOverflow.visible,
+        softWrap: true,
+      ),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        minimumSize: const Size(0, AppDimensions.buttonHeightMedium),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.paddingMedium,
+          vertical: AppDimensions.paddingMedium,
+        ),
       ),
     );
   }

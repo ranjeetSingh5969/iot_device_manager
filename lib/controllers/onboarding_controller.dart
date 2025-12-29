@@ -52,6 +52,14 @@ class OnboardingController extends GetxController {
   final RxBool isScanningBluetooth = false.obs;
   
   final TextEditingController macAddressController = TextEditingController();
+  final TextEditingController startLocationController = TextEditingController();
+  final TextEditingController endLocationController = TextEditingController();
+  final TextEditingController tempLowerController = TextEditingController();
+  final TextEditingController tempHigherController = TextEditingController();
+  final TextEditingController humidityLowerController = TextEditingController();
+  final TextEditingController humidityHigherController = TextEditingController();
+  final TextEditingController clientNameController = TextEditingController();
+  final TextEditingController sensorNumberController = TextEditingController();
 
   @override
   void onInit() {
@@ -61,10 +69,62 @@ class OnboardingController extends GetxController {
     selectedTab.value = OnboardingTab.deviceDetails;
     checkBluetoothStatus();
     _listenToBluetoothState();
+    _setupTextControllers();
+  }
+
+  void _setupTextControllers() {
     macAddressController.addListener(() {
       if (macAddressController.text != macAddress.value) {
         macAddress.value = macAddressController.text;
         macAddressError.value = '';
+      }
+    });
+    startLocationController.addListener(() {
+      if (startLocationController.text != startLocation.value) {
+        startLocation.value = startLocationController.text;
+        startLocationError.value = '';
+      }
+    });
+    endLocationController.addListener(() {
+      if (endLocationController.text != endLocation.value) {
+        endLocation.value = endLocationController.text;
+        endLocationError.value = '';
+      }
+    });
+    tempLowerController.addListener(() {
+      if (tempLowerController.text != tempLower.value) {
+        tempLower.value = tempLowerController.text;
+        tempLowerError.value = '';
+      }
+    });
+    tempHigherController.addListener(() {
+      if (tempHigherController.text != tempHigher.value) {
+        tempHigher.value = tempHigherController.text;
+        tempHigherError.value = '';
+      }
+    });
+    humidityLowerController.addListener(() {
+      if (humidityLowerController.text != humidityLower.value) {
+        humidityLower.value = humidityLowerController.text;
+        humidityLowerError.value = '';
+      }
+    });
+    humidityHigherController.addListener(() {
+      if (humidityHigherController.text != humidityHigher.value) {
+        humidityHigher.value = humidityHigherController.text;
+        humidityHigherError.value = '';
+      }
+    });
+    clientNameController.addListener(() {
+      if (clientNameController.text != clientName.value) {
+        clientName.value = clientNameController.text;
+        clientNameError.value = '';
+      }
+    });
+    sensorNumberController.addListener(() {
+      if (sensorNumberController.text != sensorNumber.value) {
+        sensorNumber.value = sensorNumberController.text;
+        sensorNumberError.value = '';
       }
     });
   }
@@ -72,6 +132,14 @@ class OnboardingController extends GetxController {
   @override
   void onClose() {
     macAddressController.dispose();
+    startLocationController.dispose();
+    endLocationController.dispose();
+    tempLowerController.dispose();
+    tempHigherController.dispose();
+    humidityLowerController.dispose();
+    humidityHigherController.dispose();
+    clientNameController.dispose();
+    sensorNumberController.dispose();
     super.onClose();
   }
 
@@ -147,6 +215,7 @@ class OnboardingController extends GetxController {
   void _showDeviceSelectionDialog(BleController bleController) {
     Get.dialog(
       Dialog(
+        backgroundColor: AppColors.backgroundWhite,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
         ),
@@ -213,7 +282,12 @@ class OnboardingController extends GetxController {
                 children: [
                   TextButton(
                     onPressed: () => Get.back(),
-                    child: const Text('Cancel'),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: AppColors.textGrey,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: AppDimensions.spacingSmall),
                   ElevatedButton(
@@ -233,6 +307,7 @@ class OnboardingController extends GetxController {
           ),
         ),
       ),
+      barrierColor: Colors.black54,
     );
   }
 
@@ -289,11 +364,17 @@ class OnboardingController extends GetxController {
   }
 
   void setStartLocation(String value) {
+    if (startLocationController.text != value) {
+      startLocationController.text = value;
+    }
     startLocation.value = value;
     startLocationError.value = '';
   }
 
   void setEndLocation(String value) {
+    if (endLocationController.text != value) {
+      endLocationController.text = value;
+    }
     endLocation.value = value;
     endLocationError.value = '';
   }
@@ -309,26 +390,41 @@ class OnboardingController extends GetxController {
   }
 
   void setTempLower(String value) {
+    if (tempLowerController.text != value) {
+      tempLowerController.text = value;
+    }
     tempLower.value = value;
     tempLowerError.value = '';
   }
 
   void setTempHigher(String value) {
+    if (tempHigherController.text != value) {
+      tempHigherController.text = value;
+    }
     tempHigher.value = value;
     tempHigherError.value = '';
   }
 
   void setHumidityLower(String value) {
+    if (humidityLowerController.text != value) {
+      humidityLowerController.text = value;
+    }
     humidityLower.value = value;
     humidityLowerError.value = '';
   }
 
   void setHumidityHigher(String value) {
+    if (humidityHigherController.text != value) {
+      humidityHigherController.text = value;
+    }
     humidityHigher.value = value;
     humidityHigherError.value = '';
   }
 
   void setClientName(String value) {
+    if (clientNameController.text != value) {
+      clientNameController.text = value;
+    }
     clientName.value = value;
     clientNameError.value = '';
   }
@@ -342,6 +438,9 @@ class OnboardingController extends GetxController {
   }
 
   void setSensorNumber(String value) {
+    if (sensorNumberController.text != value) {
+      sensorNumberController.text = value;
+    }
     sensorNumber.value = value;
     sensorNumberError.value = '';
   }
@@ -396,6 +495,7 @@ class OnboardingController extends GetxController {
       macAddress.value = '';
       macAddressController.clear();
       sensorNumber.value = '';
+      sensorNumberController.clear();
       await loadDevices();
       Get.snackbar('Success', 'Device registered successfully');
     } catch (e) {
@@ -413,61 +513,308 @@ class OnboardingController extends GetxController {
 
   bool validateTripDetails() {
     bool isValid = true;
+    final List<String> errors = [];
     
     if (startLocation.value.isEmpty) {
       startLocationError.value = 'Start location is required';
+      errors.add('Start location is required');
       isValid = false;
+    } else {
+      startLocationError.value = '';
     }
     
     if (endLocation.value.isEmpty) {
       endLocationError.value = 'End location is required';
+      errors.add('End location is required');
       isValid = false;
+    } else {
+      endLocationError.value = '';
     }
     
     if (transportMode.value == null) {
       transportModeError.value = 'Transport mode is required';
+      errors.add('Transport mode is required');
       isValid = false;
+    } else {
+      transportModeError.value = '';
     }
     
     if (startDate.value == null) {
       startDateError.value = 'Start date is required';
+      errors.add('Start date is required');
       isValid = false;
+    } else {
+      startDateError.value = '';
     }
     
     if (tempLower.value.isEmpty) {
       tempLowerError.value = 'Lower temperature is required';
+      errors.add('Lower temperature is required');
       isValid = false;
+    } else {
+      final tempLow = double.tryParse(tempLower.value);
+      if (tempLow == null) {
+        tempLowerError.value = 'Invalid temperature value';
+        errors.add('Lower temperature must be a valid number');
+        isValid = false;
+      } else {
+        tempLowerError.value = '';
+      }
     }
     
     if (tempHigher.value.isEmpty) {
       tempHigherError.value = 'Higher temperature is required';
+      errors.add('Higher temperature is required');
       isValid = false;
+    } else {
+      final tempHigh = double.tryParse(tempHigher.value);
+      if (tempHigh == null) {
+        tempHigherError.value = 'Invalid temperature value';
+        errors.add('Higher temperature must be a valid number');
+        isValid = false;
+      } else {
+        tempHigherError.value = '';
+      }
+    }
+    
+    if (tempLower.value.isNotEmpty && tempHigher.value.isNotEmpty) {
+      final tempLow = double.tryParse(tempLower.value);
+      final tempHigh = double.tryParse(tempHigher.value);
+      if (tempLow != null && tempHigh != null) {
+        if (tempHigh <= tempLow) {
+          tempLowerError.value = 'Lower temperature must be less than higher temperature';
+          tempHigherError.value = 'Higher temperature must be greater than lower temperature';
+          errors.add('Higher temperature must be greater than lower temperature. Current values: Lower = $tempLow, Higher = $tempHigh');
+          isValid = false;
+        } else {
+          if (tempLowerError.value == 'Lower temperature must be less than higher temperature') {
+            tempLowerError.value = '';
+          }
+          if (tempHigherError.value == 'Higher temperature must be greater than lower temperature') {
+            tempHigherError.value = '';
+          }
+        }
+      }
     }
     
     if (humidityLower.value.isEmpty) {
       humidityLowerError.value = 'Lower humidity is required';
+      errors.add('Lower humidity is required');
       isValid = false;
+    } else {
+      final humidityLow = double.tryParse(humidityLower.value);
+      if (humidityLow == null) {
+        humidityLowerError.value = 'Invalid humidity value';
+        errors.add('Lower humidity must be a valid number');
+        isValid = false;
+      } else if (humidityLow < 0 || humidityLow > 100) {
+        humidityLowerError.value = 'Humidity must be between 0 and 100';
+        errors.add('Lower humidity must be between 0 and 100');
+        isValid = false;
+      } else {
+        humidityLowerError.value = '';
+      }
     }
     
     if (humidityHigher.value.isEmpty) {
       humidityHigherError.value = 'Higher humidity is required';
+      errors.add('Higher humidity is required');
       isValid = false;
+    } else {
+      final humidityHigh = double.tryParse(humidityHigher.value);
+      if (humidityHigh == null) {
+        humidityHigherError.value = 'Invalid humidity value';
+        errors.add('Higher humidity must be a valid number');
+        isValid = false;
+      } else if (humidityHigh < 0 || humidityHigh > 100) {
+        humidityHigherError.value = 'Humidity must be between 0 and 100';
+        errors.add('Higher humidity must be between 0 and 100');
+        isValid = false;
+      } else {
+        humidityHigherError.value = '';
+      }
+    }
+    
+    if (humidityLower.value.isNotEmpty && humidityHigher.value.isNotEmpty) {
+      final humidityLow = double.tryParse(humidityLower.value);
+      final humidityHigh = double.tryParse(humidityHigher.value);
+      if (humidityLow != null && humidityHigh != null) {
+        if (humidityHigh <= humidityLow) {
+          humidityLowerError.value = 'Lower humidity must be less than higher humidity';
+          humidityHigherError.value = 'Higher humidity must be greater than lower humidity';
+          errors.add('Higher humidity must be greater than lower humidity. Current values: Lower = $humidityLow, Higher = $humidityHigh');
+          isValid = false;
+        } else {
+          if (humidityLowerError.value == 'Lower humidity must be less than higher humidity') {
+            humidityLowerError.value = '';
+          }
+          if (humidityHigherError.value == 'Higher humidity must be greater than lower humidity') {
+            humidityHigherError.value = '';
+          }
+        }
+      }
     }
     
     if (clientName.value.isEmpty) {
       clientNameError.value = 'Client name is required';
+      errors.add('Client name is required');
       isValid = false;
+    } else {
+      clientNameError.value = '';
+    }
+    
+    if (!isValid) {
+      _showValidationErrorDialog(errors);
     }
     
     return isValid;
+  }
+
+  void _showValidationErrorDialog(List<String> errors) {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: AppColors.backgroundWhite,
+        title: const Text(
+          'Validation Error',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textBlack,
+          ),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Please fix the following errors:',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColors.textBlack,
+                ),
+              ),
+              const SizedBox(height: AppDimensions.spacingMedium),
+              ...errors.map((error) => Padding(
+                padding: const EdgeInsets.only(bottom: AppDimensions.spacingSmall),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 20,
+                    ),
+                    const SizedBox(width: AppDimensions.spacingSmall),
+                    Expanded(
+                      child: Text(
+                        error,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textBlack,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: AppColors.primaryBlue,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
+        ),
+      ),
+      barrierColor: Colors.black54,
+    );
   }
 
   Future<void> saveTrip() async {
     if (!validateTripDetails()) {
       return;
     }
-    // TODO: Save trip to database
-    Get.snackbar('Success', 'Trip configured successfully');
+    try {
+      final db = Get.find<DatabaseService>();
+      final tempLow = double.parse(tempLower.value);
+      final tempHigh = double.parse(tempHigher.value);
+      final humidityLow = double.parse(humidityLower.value);
+      final humidityHigh = double.parse(humidityHigher.value);
+      final tripId = await db.insertTrip(
+        startLocation: startLocation.value.trim(),
+        endLocation: endLocation.value.trim(),
+        transportMode: transportMode.value!.name,
+        startDate: startDate.value!.millisecondsSinceEpoch,
+        tempLow: tempLow,
+        tempHigh: tempHigh,
+        humidityLow: humidityLow,
+        humidityHigh: humidityHigh,
+        clientName: clientName.value.trim(),
+      );
+      if (selectedDevices.isNotEmpty) {
+        final deviceIds = selectedDevices.map((device) => device.id).toList();
+        await db.insertTripSensors(
+          tripId: tripId,
+          deviceIds: deviceIds,
+        );
+      }
+      _clearTripForm();
+      Get.snackbar(
+        'Success',
+        'Trip configured successfully',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Get.theme.colorScheme.primary,
+        colorText: Get.theme.colorScheme.onPrimary,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to save trip: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Get.theme.colorScheme.error,
+        colorText: Get.theme.colorScheme.onError,
+      );
+    }
+  }
+
+  void _clearTripForm() {
+    startLocation.value = '';
+    startLocationController.clear();
+    endLocation.value = '';
+    endLocationController.clear();
+    transportMode.value = null;
+    startDate.value = DateTime.now();
+    tempLower.value = '';
+    tempLowerController.clear();
+    tempHigher.value = '';
+    tempHigherController.clear();
+    humidityLower.value = '';
+    humidityLowerController.clear();
+    humidityHigher.value = '';
+    humidityHigherController.clear();
+    clientName.value = '';
+    clientNameController.clear();
+    selectedDevices.clear();
+    startLocationError.value = '';
+    endLocationError.value = '';
+    transportModeError.value = '';
+    startDateError.value = '';
+    tempLowerError.value = '';
+    tempHigherError.value = '';
+    humidityLowerError.value = '';
+    humidityHigherError.value = '';
+    clientNameError.value = '';
   }
 }
 
