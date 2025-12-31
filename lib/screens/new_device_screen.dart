@@ -4,8 +4,11 @@ import '../controllers/new_device_controller.dart';
 import '../controllers/ble_controller.dart';
 import '../models/device.dart';
 import '../models/ble_device.dart';
+import '../services/database_service.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
+import '../routes/app_routes.dart';
+import '../utils/snackbar_helper.dart';
 
 class NewDeviceScreen extends StatelessWidget {
   const NewDeviceScreen({super.key});
@@ -39,6 +42,10 @@ class NewDeviceScreen extends StatelessWidget {
           const SizedBox(height: AppDimensions.spacingMedium),
           Expanded(
             child: Obx(() {
+              // Observe connection state to trigger rebuilds
+              final _ = bleController.connectionState.value;
+              final __ = bleController.connectedDevice.value;
+              
               if (controller.selectedTab.value == DeviceTab.onboarded) {
                 return _buildOnboardedDevicesList(controller, bleController);
               } else {
@@ -112,6 +119,11 @@ class NewDeviceScreen extends StatelessWidget {
     BleController bleController,
   ) {
     return Obx(() {
+      // Observe connection state to trigger rebuilds when connection changes
+      final connectionState = bleController.connectionState.value;
+      final connectedDevice = bleController.connectedDevice.value;
+      final connectingDeviceMac = bleController.connectingDeviceMac.value;
+      
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -158,6 +170,11 @@ class NewDeviceScreen extends StatelessWidget {
     BleController bleController,
   ) {
     return Obx(() {
+      // Observe connection state to trigger rebuilds when connection changes
+      final connectionState = bleController.connectionState.value;
+      final connectedDevice = bleController.connectedDevice.value;
+      final connectingDeviceMac = bleController.connectingDeviceMac.value;
+      
       if (bleController.isScanning && bleController.discoveredDevices.isEmpty) {
         return const Center(
           child: Column(
@@ -226,11 +243,17 @@ class NewDeviceScreen extends StatelessWidget {
     required NewDeviceController controller,
     required VoidCallback onSwipe,
   }) {
-    return GetBuilder<BleController>(
-      builder: (bleCtrl) {
-        final isConnected = bleCtrl.isConnected &&
-            bleCtrl.connectedDevice.value?.macAddress.toUpperCase() ==
-                device.macAddress.toUpperCase();
+    return Obx(() {
+      final connectionState = bleController.connectionState.value;
+      final connectedDevice = bleController.connectedDevice.value;
+      final connectingDeviceMac = bleController.connectingDeviceMac.value;
+      final isConnected = connectionState == BleConnectionState.ready &&
+          connectedDevice?.macAddress.toUpperCase() ==
+              device.macAddress.toUpperCase();
+      // Only show connecting for this specific device
+      final isConnecting = (connectionState == BleConnectionState.connecting ||
+          connectionState == BleConnectionState.discoveringServices) &&
+          connectingDeviceMac == device.macAddress.toUpperCase();
         return Container(
           margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
           decoration: BoxDecoration(
@@ -274,31 +297,66 @@ class NewDeviceScreen extends StatelessWidget {
                       fontSize: 12,
                       color: AppColors.secondaryGreen,
                     ),
+                  )
+                else if (isConnecting)
+                  const Text(
+                    'Connecting...',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
               ],
             ),
             trailing: isConnected
-                ? TextButton(
-                    onPressed: () async {
-                      await bleController.disconnect();
-                      Get.snackbar(
-                        'Disconnected',
-                        'Disconnected from ${device.displayName}',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    },
-                    child: const Text(
-                      'Disconnect',
-                      style: TextStyle(
-                        color: AppColors.error,
-                        fontSize: 14,
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final responseString = await bleController.sendConfigCommand();
+                          if (responseString != null && responseString.isNotEmpty) {
+                            // Navigate to result screen with the response
+                            Get.toNamed(AppRoutes.configResult, arguments: responseString);
+                          } else {
+                            SnackbarHelper.showError('Failed to get config response', title: 'Error');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondaryGreen,
+                          foregroundColor: AppColors.textWhite,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimensions.paddingSmall,
+                            vertical: AppDimensions.paddingSmall,
+                          ),
+                        ),
+                        child: const Text(
+                          'Config',
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: AppDimensions.spacingSmall),
+                      TextButton(
+                        onPressed: () async {
+                          await bleController.disconnect();
+                          SnackbarHelper.showInfo('Disconnected from ${device.displayName}', title: 'Disconnected');
+                        },
+                        child: const Text(
+                          'Disconnect',
+                          style: TextStyle(
+                            color: AppColors.error,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 : ElevatedButton(
-                    onPressed: () async {
-                      await controller.connectToDevice(device);
-                    },
+                    onPressed: isConnecting
+                        ? null
+                        : () async {
+                            await controller.connectToDevice(device);
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       foregroundColor: AppColors.textWhite,
@@ -307,15 +365,24 @@ class NewDeviceScreen extends StatelessWidget {
                         vertical: AppDimensions.paddingSmall,
                       ),
                     ),
-                    child: const Text(
-                      'View Dashboard',
-                      style: TextStyle(fontSize: 14),
-                    ),
+                    child: isConnecting
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(AppColors.textWhite),
+                            ),
+                          )
+                        : const Text(
+                            'Connect',
+                            style: TextStyle(fontSize: 14),
+                          ),
                   ),
           ),
         );
-      },
-    );
+      });
   }
 
   Widget _buildBleDeviceTile({
@@ -324,14 +391,17 @@ class NewDeviceScreen extends StatelessWidget {
     required NewDeviceController controller,
     required VoidCallback onSwipe,
   }) {
-    return GetBuilder<BleController>(
-      builder: (bleCtrl) {
-        final isConnected = bleCtrl.isConnected &&
-            bleCtrl.connectedDevice.value?.macAddress.toUpperCase() ==
-                bleDevice.macAddress.toUpperCase();
-        final isConnecting = bleCtrl.connectionState.value ==
-            BleConnectionState.connecting ||
-            bleCtrl.connectionState.value == BleConnectionState.discoveringServices;
+    return Obx(() {
+      final connectionState = bleController.connectionState.value;
+      final connectedDevice = bleController.connectedDevice.value;
+      final connectingDeviceMac = bleController.connectingDeviceMac.value;
+      final isConnected = connectionState == BleConnectionState.ready &&
+          connectedDevice?.macAddress.toUpperCase() ==
+              bleDevice.macAddress.toUpperCase();
+      // Only show connecting for this specific device
+      final isConnecting = (connectionState == BleConnectionState.connecting ||
+          connectionState == BleConnectionState.discoveringServices) &&
+          connectingDeviceMac == bleDevice.macAddress.toUpperCase();
         return Container(
           margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
           decoration: BoxDecoration(
@@ -387,22 +457,47 @@ class NewDeviceScreen extends StatelessWidget {
               ],
             ),
             trailing: isConnected
-                ? TextButton(
-                    onPressed: () async {
-                      await bleController.disconnect();
-                      Get.snackbar(
-                        'Disconnected',
-                        'Disconnected from ${bleDevice.name}',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    },
-                    child: const Text(
-                      'Disconnect',
-                      style: TextStyle(
-                        color: AppColors.error,
-                        fontSize: 14,
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final responseString = await bleController.sendConfigCommand();
+                          if (responseString != null && responseString.isNotEmpty) {
+                            // Navigate to result screen with the response
+                            Get.toNamed(AppRoutes.configResult, arguments: responseString);
+                          } else {
+                            SnackbarHelper.showError('Failed to get config response', title: 'Error');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondaryGreen,
+                          foregroundColor: AppColors.textWhite,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimensions.paddingSmall,
+                            vertical: AppDimensions.paddingSmall,
+                          ),
+                        ),
+                        child: const Text(
+                          'Config',
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: AppDimensions.spacingSmall),
+                      TextButton(
+                        onPressed: () async {
+                          await bleController.disconnect();
+                          SnackbarHelper.showInfo('Disconnected from ${bleDevice.name}', title: 'Disconnected');
+                        },
+                        child: const Text(
+                          'Disconnect',
+                          style: TextStyle(
+                            color: AppColors.error,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 : ElevatedButton(
                     onPressed: isConnecting
@@ -435,8 +530,7 @@ class NewDeviceScreen extends StatelessWidget {
                   ),
           ),
         );
-      },
-    );
+      });
   }
 }
 

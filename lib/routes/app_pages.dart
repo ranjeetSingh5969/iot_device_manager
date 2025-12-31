@@ -12,6 +12,7 @@ import '../screens/dashboard_screen.dart';
 import '../screens/history_screen.dart';
 import '../screens/data_sync_screen.dart';
 import '../screens/report_generator_screen.dart';
+import '../screens/config_result_screen.dart';
 import '../bindings/auth_binding.dart';
 import '../bindings/dashboard_binding.dart';
 import '../bindings/new_device_binding.dart';
@@ -95,6 +96,10 @@ class AppPages {
       name: AppRoutes.reportGenerator,
       page: () => const ReportGeneratorScreen(),
       binding: ReportGeneratorBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.configResult,
+      page: () => const ConfigResultScreen(),
     ),
   ];
 }

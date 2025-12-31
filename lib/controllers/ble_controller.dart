@@ -18,14 +18,30 @@ enum BleConnectionState {
 }
 
 class BleController extends GetxController {
-  static final Guid iotServiceUuid = Guid('0000180A-0000-1000-8000-00805f9b34fb');
-  static final Guid commandCharUuid = Guid('00002A29-0000-1000-8000-00805f9b34fb');
-  static final Guid dataCharUuid = Guid('00002A2A-0000-1000-8000-00805f9b34fb');
+  // ESP32 BLE Service UUIDs (common IoT device UUIDs)
+  static final Guid iotServiceUuid = Guid('4fafc201-1fb5-459e-8fcc-c5c9c331914b');
+  // ESP32 BLE Characteristic UUIDs (Nordic UART Service)
+  static final Guid rxCharacteristicUuid = Guid('6e400002-b5a3-f393-e0a9-e50e24dcca9e'); // RX - WRITE
+  static final Guid txCharacteristicUuid = Guid('6e400003-b5a3-f393-e0a9-e50e24dcca9e'); // TX - NOTIFY, READ
+  // Try multiple possible characteristic UUIDs as fallback
+  static final List<Guid> possibleCommandCharUuids = [
+    rxCharacteristicUuid, // Primary RX characteristic
+    Guid('beb5483e-36e1-4688-b7f5-ea07361b26a8'), // Common ESP32 command char
+    Guid('00002A29-0000-1000-8000-00805f9b34fb'), // Fallback
+  ];
+  static final List<Guid> possibleDataCharUuids = [
+    txCharacteristicUuid, // Primary TX characteristic
+    Guid('beb5483f-36e1-4688-b7f5-ea07361b26a8'), // Common ESP32 data char
+    Guid('00002A2A-0000-1000-8000-00805f9b34fb'), // Fallback
+  ];
 
   final Rx<BleConnectionState> connectionState = BleConnectionState.disconnected.obs;
   final RxList<BleDevice> discoveredDevices = <BleDevice>[].obs;
   final Rxn<BleDevice> connectedDevice = Rxn<BleDevice>();
+  final Rxn<String> connectingDeviceMac = Rxn<String>(); // Track which device is being connected
   final Rxn<String> errorMessage = Rxn<String>();
+  final _dataStreamController = StreamController<Map<String, dynamic>>.broadcast();
+  Stream<Map<String, dynamic>> get onDataReceived => _dataStreamController.stream;
 
   BluetoothDevice? _bluetoothDevice;
   BluetoothCharacteristic? _commandCharacteristic;
@@ -45,6 +61,7 @@ class BleController extends GetxController {
   void onClose() {
     disconnect();
     stopScan();
+    _dataStreamController.close();
     super.onClose();
   }
 
@@ -121,66 +138,212 @@ class BleController extends GetxController {
     if (device.bluetoothDevice == null) {
       errorMessage.value = 'Invalid device';
       connectionState.value = BleConnectionState.error;
+      connectingDeviceMac.value = null;
       return;
     }
     await disconnect();
     connectionState.value = BleConnectionState.connecting;
+    connectingDeviceMac.value = device.macAddress.toUpperCase(); // Track which device is connecting
     connectedDevice.value = device;
     _bluetoothDevice = device.bluetoothDevice;
     errorMessage.value = null;
+    update();
     try {
-      _connectionSubscription = _bluetoothDevice!.connectionState.listen((state) {
-        if (state == BluetoothConnectionState.disconnected) {
+      final bluetoothDevice = _bluetoothDevice;
+      if (bluetoothDevice == null) {
+        throw Exception('Bluetooth device is null');
+      }
+      _connectionSubscription = bluetoothDevice.connectionState.listen((state) {
+        // Only handle disconnection if we're not in the middle of connecting
+        if (state == BluetoothConnectionState.disconnected && 
+            connectionState.value != BleConnectionState.connecting &&
+            connectionState.value != BleConnectionState.discoveringServices) {
           _handleDisconnection();
         }
       });
-      await _bluetoothDevice!.connect(
+      await bluetoothDevice.connect(
         timeout: const Duration(seconds: 15),
         autoConnect: false,
       );
       connectionState.value = BleConnectionState.discoveringServices;
-      final services = await _bluetoothDevice!.discoverServices();
+      update();
+      final services = await bluetoothDevice.discoverServices();
+      if (services.isEmpty) {
+        throw Exception('No services discovered');
+      }
+      
+      debugPrint('BLE: Discovered ${services.length} services: ${services.map((s) => s.uuid.toString()).join(', ')}');
+      
+      bool foundService = false;
+      BluetoothService? targetService;
+      
+      // First, try to find the expected service
       for (final service in services) {
         if (service.uuid == iotServiceUuid) {
-          for (final characteristic in service.characteristics) {
-            if (characteristic.uuid == commandCharUuid) {
-              _commandCharacteristic = characteristic;
-            } else if (characteristic.uuid == dataCharUuid) {
-              _dataCharacteristic = characteristic;
-            }
+          foundService = true;
+          targetService = service;
+          debugPrint('BLE: Found expected service: ${service.uuid}');
+          break;
+        }
+      }
+      
+      // If expected service not found, use the first non-standard service (likely the IoT service)
+      if (!foundService && services.isNotEmpty) {
+        for (final service in services) {
+          final uuidStr = service.uuid.toString().toLowerCase();
+          // Skip standard Bluetooth services (1800, 1801, etc.)
+          if (!uuidStr.startsWith('000018') && !uuidStr.startsWith('0000fff')) {
+            targetService = service;
+            foundService = true;
+            debugPrint('BLE: Using alternative service: ${service.uuid}');
+            break;
           }
         }
       }
+      
+      if (foundService && targetService != null) {
+        debugPrint('BLE: Service has ${targetService.characteristics.length} characteristics');
+        for (final characteristic in targetService.characteristics) {
+          final charUuid = characteristic.uuid.toString().toLowerCase();
+          debugPrint('BLE: Found characteristic: $charUuid');
+          
+          // Try to match command characteristic
+          if (_commandCharacteristic == null) {
+            for (final possibleUuid in possibleCommandCharUuids) {
+              if (characteristic.uuid == possibleUuid) {
+                _commandCharacteristic = characteristic;
+                debugPrint('BLE: Matched command characteristic: $charUuid');
+                break;
+              }
+            }
+          }
+          
+          // Try to match data characteristic
+          if (_dataCharacteristic == null) {
+            for (final possibleUuid in possibleDataCharUuids) {
+              if (characteristic.uuid == possibleUuid) {
+                _dataCharacteristic = characteristic;
+                debugPrint('BLE: Matched data characteristic: $charUuid');
+                break;
+              }
+            }
+          }
+          
+          // If no match found, use the first characteristic that supports notify as data char
+          if (_dataCharacteristic == null && characteristic.properties.notify) {
+            _dataCharacteristic = characteristic;
+            debugPrint('BLE: Using first notify characteristic as data: $charUuid');
+          }
+          
+          // If no match found, use the first writable characteristic as command char
+          if (_commandCharacteristic == null && characteristic.properties.write) {
+            _commandCharacteristic = characteristic;
+            debugPrint('BLE: Using first writable characteristic as command: $charUuid');
+          }
+        }
+      } else {
+        debugPrint('BLE: No suitable service found. Available services: ${services.map((s) => s.uuid.toString()).join(', ')}');
+      }
+      
+      // Enable notifications on data characteristic if found
       if (_dataCharacteristic != null) {
-        await _dataCharacteristic!.setNotifyValue(true);
-        _dataSubscription = _dataCharacteristic!.onValueReceived.listen((value) {
-          _handleDataReceived(value);
-        });
+        try {
+          await _dataCharacteristic!.setNotifyValue(true);
+          _dataSubscription = _dataCharacteristic!.onValueReceived.listen((value) {
+            _handleDataReceived(value);
+          });
+          debugPrint('BLE: Data characteristic notification enabled');
+        } catch (e) {
+          debugPrint('BLE: Failed to enable notifications: $e');
+        }
+      } else {
+        debugPrint('BLE: Warning - Data characteristic not found, but continuing connection');
+      }
+      
+      if (_commandCharacteristic != null) {
+        debugPrint('BLE: Command characteristic found');
+      } else {
+        debugPrint('BLE: Warning - Command characteristic not found, but continuing connection');
+      }
+      
+      // Mark as ready even if characteristics aren't found - connection is still valid
+      // Ensure connectedDevice is set before setting state to ready
+      if (connectedDevice.value == null) {
+        connectedDevice.value = device;
       }
       connectionState.value = BleConnectionState.ready;
-      debugPrint('BLE: Connected and ready');
-    } catch (e) {
+      connectingDeviceMac.value = null; // Clear connecting state
+      update();
+      debugPrint('BLE: Connected and ready - Device: ${connectedDevice.value?.macAddress}');
+    } catch (e, stackTrace) {
       debugPrint('BLE connection error: $e');
+      debugPrint('Stack trace: $stackTrace');
       errorMessage.value = 'Connection failed: ${e.toString()}';
       connectionState.value = BleConnectionState.error;
+      connectingDeviceMac.value = null; // Clear connecting state on error
       connectedDevice.value = null;
+      _bluetoothDevice = null;
+      _commandCharacteristic = null;
+      _dataCharacteristic = null;
+      _connectionSubscription?.cancel();
+      _connectionSubscription = null;
+      _dataSubscription?.cancel();
+      _dataSubscription = null;
+      update();
     }
   }
 
   void _handleDisconnection() {
-    connectionState.value = BleConnectionState.disconnected;
-    connectedDevice.value = null;
-    _bluetoothDevice = null;
-    _commandCharacteristic = null;
-    _dataCharacteristic = null;
+    // Only handle disconnection if we're actually connected or ready
+    // Don't clear state if we're in the middle of connecting
+    if (connectionState.value == BleConnectionState.ready || 
+        connectionState.value == BleConnectionState.connected) {
+      connectionState.value = BleConnectionState.disconnected;
+      connectingDeviceMac.value = null; // Clear connecting state
+      connectedDevice.value = null;
+      _bluetoothDevice = null;
+      _commandCharacteristic = null;
+      _dataCharacteristic = null;
+      update();
+    }
   }
 
   void _handleDataReceived(List<int> data) {
+    if (data.isEmpty) return;
+    final rawBytes = List<int>.from(data);
     _dataBuffer.addAll(data);
-    final dataString = utf8.decode(_dataBuffer);
-    if (dataString.contains('\n') || dataString.contains(';')) {
-      _dataCompleter?.complete(dataString);
-      _dataBuffer.clear();
+    try {
+      final dataString = utf8.decode(_dataBuffer);
+      if (dataString.contains('\n') || dataString.contains(';')) {
+        _dataCompleter?.complete(dataString);
+      final lines = dataString.split(RegExp(r'[;\n]')).where((s) => s.isNotEmpty);
+      final currentDevice = connectedDevice.value;
+      for (final line in lines) {
+        SensorReading? parsedReading;
+        if (currentDevice != null) {
+          parsedReading = _parseSensorData(currentDevice.macAddress, line);
+        }
+        _dataStreamController.add({
+          'rawData': line.trim(),
+          'rawBytes': List<int>.from(data),
+          'parsedReading': parsedReading,
+        });
+      }
+        _dataBuffer.clear();
+      } else {
+        _dataStreamController.add({
+          'rawData': dataString,
+          'rawBytes': rawBytes,
+          'parsedReading': null,
+        });
+      }
+    } catch (e) {
+      debugPrint('Error decoding data: $e');
+      _dataStreamController.add({
+        'rawData': 'Binary data (${data.length} bytes)',
+        'rawBytes': rawBytes,
+        'parsedReading': null,
+      });
     }
   }
 
@@ -199,30 +362,158 @@ class BleController extends GetxController {
     _commandCharacteristic = null;
     _dataCharacteristic = null;
     connectionState.value = BleConnectionState.disconnected;
+    update();
   }
 
+  /// Send a command to the device
+  Future<bool> sendCommand(String command) async {
+    return await _sendCommand(command);
+  }
+
+  /// Internal method to send command
+  Future<bool> _sendCommand(String command) async {
+    if (connectionState.value != BleConnectionState.ready) {
+      debugPrint('BLE: Cannot send command - device not ready');
+      return false;
+    }
+    
+    if (_commandCharacteristic == null) {
+      debugPrint('BLE: Cannot send command - command characteristic not found');
+      return false;
+    }
+    
+    try {
+      final commandBytes = utf8.encode(command);
+      await _commandCharacteristic!.write(commandBytes, withoutResponse: false);
+      debugPrint('BLE: Sent command: ${command.trim()} (${commandBytes.length} bytes)');
+      return true;
+    } catch (e) {
+      debugPrint('BLE: Error sending command: $e');
+      return false;
+    }
+  }
+
+  /// Send config command to the device (writes to RX, listens to TX)
+  /// Returns the response string if successful, null otherwise
+  Future<String?> sendConfigCommand({String configCommand = 'Data'}) async {
+    if (connectionState.value != BleConnectionState.ready) {
+      debugPrint('BLE: Cannot send config - device not ready');
+      return null;
+    }
+    
+    if (_commandCharacteristic == null) {
+      debugPrint('BLE: Cannot send config - command characteristic not found');
+      return null;
+    }
+    
+    try {
+      // Write config command to RX characteristic
+      final commandBytes = utf8.encode('$configCommand\n');
+      await _commandCharacteristic!.write(commandBytes, withoutResponse: false);
+      debugPrint('BLE: Sent config command: $configCommand');
+      
+      // Read from TX characteristic to get response
+      if (_dataCharacteristic != null && _dataCharacteristic!.properties.read) {
+        try {
+          // Wait a bit for the device to process the command
+          await Future.delayed(const Duration(milliseconds: 200));
+          final response = await _dataCharacteristic!.read();
+          final responseString = utf8.decode(response);
+          debugPrint('BLE: Config response: $responseString');
+          
+          // Return the response string
+          return responseString.trim();
+        } catch (e) {
+          debugPrint('BLE: Failed to read config response: $e');
+          return null;
+        }
+      } else {
+        // If read is not available, return null
+        debugPrint('BLE: TX characteristic does not support read');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('BLE: Error sending config command: $e');
+      return null;
+    }
+  }
+
+  /// Read from TX characteristic
+  Future<String?> readCharacteristic() async {
+    if (connectionState.value != BleConnectionState.ready) {
+      debugPrint('BLE: Cannot read - device not ready');
+      return null;
+    }
+    
+    if (_dataCharacteristic == null) {
+      debugPrint('BLE: Cannot read - data characteristic not found');
+      return null;
+    }
+    
+    if (!_dataCharacteristic!.properties.read) {
+      debugPrint('BLE: Cannot read - characteristic does not support read');
+      return null;
+    }
+    
+    try {
+      // Wait a bit for the device to process any pending commands
+      await Future.delayed(const Duration(milliseconds: 200));
+      final response = await _dataCharacteristic!.read();
+      final responseString = utf8.decode(response);
+      debugPrint('BLE: Read characteristic response: $responseString');
+      
+      // Emit the response through the data stream (this will be counted in total data)
+      _dataStreamController.add({
+        'rawData': responseString.trim(),
+        'rawBytes': response,
+        'parsedReading': null,
+        'isReadResponse': true,
+      });
+      
+      return responseString.trim();
+    } catch (e) {
+      debugPrint('BLE: Error reading characteristic: $e');
+      return null;
+    }
+  }
+
+  /// Request data from the device
+  Future<bool> requestData() async {
+    return await _sendCommand('data\n');
+  }
+
+  /// Send data command and wait for response
   Future<List<SensorReading>> sendDataCommand(String deviceId) async {
     if (connectionState.value != BleConnectionState.ready) {
       throw Exception('Device not connected or ready');
     }
     try {
-      final command = utf8.encode('data\n');
-      if (_commandCharacteristic != null) {
-        await _commandCharacteristic!.write(command, withoutResponse: false);
-        debugPrint('BLE: Sent "data" command');
-      } else if (_dataCharacteristic != null) {
-        await _dataCharacteristic!.read();
-      }
       _dataCompleter = Completer<String>();
       _dataBuffer.clear();
+      
+      final success = await _sendCommand('data\n');
+      if (!success) {
+        debugPrint('BLE: Failed to send data command');
+        return _generateSimulatedData(deviceId);
+      }
+      
+      if (_dataCompleter == null) {
+        throw Exception('Data completer is null');
+      }
+      
       final response = await _dataCompleter!.future.timeout(
         const Duration(seconds: 5),
-        onTimeout: () => '',
+        onTimeout: () {
+          debugPrint('BLE: Command response timeout');
+          return '';
+        },
       );
+      
       if (response.isEmpty) {
         debugPrint('BLE: No response, using simulated data');
         return _generateSimulatedData(deviceId);
       }
+      
       return _parseMultipleReadings(deviceId, response);
     } catch (e) {
       debugPrint('Error sending data command: $e');
@@ -252,12 +543,16 @@ class BleController extends GetxController {
       final tempMatch = tempPattern.firstMatch(data);
       final humMatch = humPattern.firstMatch(data);
       if (tempMatch != null && humMatch != null) {
-        return SensorReading(
-          deviceId: deviceId,
-          temperature: double.parse(tempMatch.group(1)!),
-          humidity: double.parse(humMatch.group(1)!),
-          timestamp: DateTime.now().millisecondsSinceEpoch,
-        );
+        final tempValue = tempMatch.group(1);
+        final humValue = humMatch.group(1);
+        if (tempValue != null && humValue != null) {
+          return SensorReading(
+            deviceId: deviceId,
+            temperature: double.parse(tempValue),
+            humidity: double.parse(humValue),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+          );
+        }
       }
     } catch (e) {
       debugPrint('Failed to parse sensor data: $e');

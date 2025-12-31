@@ -4,6 +4,7 @@ import '../models/ble_device.dart';
 import '../services/database_service.dart';
 import '../controllers/ble_controller.dart';
 import '../routes/app_routes.dart';
+import '../utils/snackbar_helper.dart';
 
 enum DeviceTab {
   onboarded,
@@ -51,42 +52,95 @@ class NewDeviceController extends GetxController {
 
   Future<void> connectToDevice(Device device) async {
     try {
-      Get.back(result: device);
-      Get.toNamed(AppRoutes.dashboard, arguments: device);
+      final bleController = Get.find<BleController>();
+      if (bleController.isConnected) {
+        final connectedMac = bleController.connectedDevice.value?.macAddress.toUpperCase();
+        if (connectedMac == device.macAddress.toUpperCase()) {
+          SnackbarHelper.showInfo('Device is already connected', title: 'Already Connected');
+          return;
+        }
+        await bleController.disconnect();
+      }
+      SnackbarHelper.showInfo('Scanning for ${device.displayName}...', title: 'Scanning');
+      await bleController.startScan();
+      await Future.delayed(const Duration(seconds: 3));
+      BleDevice? matchingDevice;
+      try {
+        matchingDevice = bleController.discoveredDevices.firstWhere(
+          (d) => d.macAddress.toUpperCase() == device.macAddress.toUpperCase(),
+        );
+      } catch (e) {
+        matchingDevice = null;
+      }
+      if (matchingDevice == null || matchingDevice.bluetoothDevice == null) {
+        SnackbarHelper.showError('Please make sure the device is nearby and try again', title: 'Device Not Found');
+        return;
+      }
+      SnackbarHelper.showInfo('Connecting to ${device.displayName}...', title: 'Connecting');
+      await bleController.connect(matchingDevice);
+      
+      // Wait a bit for state to propagate
+      await Future.delayed(const Duration(milliseconds: 300));
+      
+      // Check connection state after delay
+      final currentState = bleController.connectionState.value;
+      final currentDevice = bleController.connectedDevice.value;
+      
+      if (currentState == BleConnectionState.ready && 
+          currentDevice?.macAddress.toUpperCase() == device.macAddress.toUpperCase()) {
+        SnackbarHelper.showSuccess('Successfully connected to ${device.displayName}', title: 'Connected');
+        // No need to reload devices - connection state is already updated and UI will react
+      } else {
+        SnackbarHelper.showError(bleController.errorMessage.value ?? 'Failed to connect to device', title: 'Connection Failed');
+      }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to connect to device: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      SnackbarHelper.showError('Failed to connect to device: ${e.toString()}', title: 'Error');
     }
   }
 
   Future<void> connectToNearbyDevice(BleDevice bleDevice) async {
     try {
       final bleController = Get.find<BleController>();
+      if (bleController.isConnected) {
+        final connectedMac = bleController.connectedDevice.value?.macAddress.toUpperCase();
+        if (connectedMac == bleDevice.macAddress.toUpperCase()) {
+          SnackbarHelper.showInfo('Device is already connected', title: 'Already Connected');
+          return;
+        }
+        await bleController.disconnect();
+      }
+      SnackbarHelper.showInfo('Connecting to ${bleDevice.name}...', title: 'Connecting');
       await bleController.connect(bleDevice);
-      final db = Get.find<DatabaseService>();
-      final existing = await db.getDeviceByMac(bleDevice.macAddress);
-      if (existing != null) {
-        Get.back(result: existing);
+      
+      // Wait a bit for state to propagate
+      await Future.delayed(const Duration(milliseconds: 300));
+      
+      // Check connection state after delay
+      final currentState = bleController.connectionState.value;
+      final currentDevice = bleController.connectedDevice.value;
+      
+      if (currentState == BleConnectionState.ready && 
+          currentDevice?.macAddress.toUpperCase() == bleDevice.macAddress.toUpperCase()) {
+        final db = Get.find<DatabaseService>();
+        final existing = await db.getDeviceByMac(bleDevice.macAddress);
+        if (existing == null) {
+          final device = Device(
+            id: 'dev-${DateTime.now().millisecondsSinceEpoch}',
+            macAddress: bleDevice.macAddress.toUpperCase(),
+            sensorNumber: 1,
+            name: bleDevice.name,
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+          );
+          await db.insertDevice(device);
+        }
+        SnackbarHelper.showSuccess('Successfully connected to ${bleDevice.name}', title: 'Connected');
+        // Reload devices to show the newly added device in onboarded list
+        await loadOnboardedDevices();
       } else {
-        final device = Device(
-          id: 'dev-${DateTime.now().millisecondsSinceEpoch}',
-          macAddress: bleDevice.macAddress.toUpperCase(),
-          sensorNumber: 1,
-          name: bleDevice.name,
-          createdAt: DateTime.now().millisecondsSinceEpoch,
-        );
-        await db.insertDevice(device);
-        Get.back(result: device);
+        SnackbarHelper.showError(bleController.errorMessage.value ?? 'Failed to connect to device', title: 'Connection Failed');
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to connect to device: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      SnackbarHelper.showError('Failed to connect to device: ${e.toString()}', title: 'Error');
     }
   }
 }

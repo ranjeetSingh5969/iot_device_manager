@@ -203,7 +203,8 @@ class _BleScanScreenState extends State<BleScanScreen> {
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
-                Get.find<BleController>().clearError();
+                final bleController = Get.find<BleController>();
+                bleController.clearError();
                 _startScan();
               },
               icon: const Icon(Icons.refresh),
