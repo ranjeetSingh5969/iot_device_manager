@@ -10,13 +10,29 @@ import '../constants/app_dimensions.dart';
 import '../routes/app_routes.dart';
 import '../utils/snackbar_helper.dart';
 
-class NewDeviceScreen extends StatelessWidget {
+class NewDeviceScreen extends StatefulWidget {
   const NewDeviceScreen({super.key});
+
+  @override
+  State<NewDeviceScreen> createState() => _NewDeviceScreenState();
+}
+
+class _NewDeviceScreenState extends State<NewDeviceScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Reload devices when screen is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final controller = Get.find<NewDeviceController>();
+      controller.loadOnboardedDevices();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<NewDeviceController>();
     final bleController = Get.find<BleController>();
+    
     return Scaffold(
       backgroundColor: AppColors.backgroundWhite,
       appBar: AppBar(
@@ -35,6 +51,34 @@ class NewDeviceScreen extends StatelessWidget {
         backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
         centerTitle: true,
+        actions: [
+          Obx(() {
+            if (controller.selectedTab.value == DeviceTab.nearby) {
+              return IconButton(
+                icon: bleController.isScanning
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
+                        ),
+                      )
+                    : const Icon(
+                        Icons.refresh,
+                        color: AppColors.primaryBlue,
+                      ),
+                onPressed: bleController.isScanning
+                    ? null
+                    : () {
+                        controller.startScan();
+                      },
+                tooltip: 'Rescan',
+              );
+            }
+            return const SizedBox.shrink();
+          }),
+        ],
       ),
       body: Column(
         children: [
@@ -193,7 +237,7 @@ class NewDeviceScreen extends StatelessWidget {
           ),
         );
       }
-      if (bleController.discoveredDevices.isEmpty) {
+      if (bleController.discoveredDevices.isEmpty && !bleController.isScanning) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -215,7 +259,7 @@ class NewDeviceScreen extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => controller.startScan(),
                 icon: const Icon(Icons.refresh),
-                label: const Text('Scan Again'),
+                label: const Text('Rescan'),
               ),
             ],
           ),
@@ -247,6 +291,8 @@ class NewDeviceScreen extends StatelessWidget {
       final connectionState = bleController.connectionState.value;
       final connectedDevice = bleController.connectedDevice.value;
       final connectingDeviceMac = bleController.connectingDeviceMac.value;
+      final discoveredDevices = bleController.discoveredDevices;
+      
       final isConnected = connectionState == BleConnectionState.ready &&
           connectedDevice?.macAddress.toUpperCase() ==
               device.macAddress.toUpperCase();
@@ -254,6 +300,12 @@ class NewDeviceScreen extends StatelessWidget {
       final isConnecting = (connectionState == BleConnectionState.connecting ||
           connectionState == BleConnectionState.discoveringServices) &&
           connectingDeviceMac == device.macAddress.toUpperCase();
+      
+      // Check if this onboarded device is also in nearby devices
+      final isNearby = discoveredDevices.any(
+        (d) => d.macAddress.toUpperCase() == device.macAddress.toUpperCase(),
+      );
+      
         return Container(
           margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
           decoration: BoxDecoration(
@@ -262,15 +314,33 @@ class NewDeviceScreen extends StatelessWidget {
             border: Border.all(color: AppColors.borderGrey),
           ),
           child: ListTile(
-            leading: Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: isConnected
-                    ? AppColors.secondaryGreen
-                    : AppColors.textGreyLight,
-                shape: BoxShape.circle,
-              ),
+            leading: Stack(
+              children: [
+                Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: isConnected
+                        ? AppColors.secondaryGreen
+                        : AppColors.textGreyLight,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                // Green dot indicator if device is nearby
+                if (isNearby && !isConnected)
+                  Positioned(
+                    right: -2,
+                    top: -2,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondaryGreen,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+              ],
             ),
             title: Text(
               device.displayName,
@@ -314,12 +384,14 @@ class NewDeviceScreen extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          final responseString = await bleController.sendConfigCommand();
-                          if (responseString != null && responseString.isNotEmpty) {
-                            // Navigate to result screen with the response
-                            Get.toNamed(AppRoutes.configResult, arguments: responseString);
+                          // Send Data command to RX characteristic
+                          final success = await bleController.sendCommand('data');
+                          if (success) {
+                            // Navigate to result screen immediately
+                            // The screen will subscribe to TX notifications
+                            Get.toNamed(AppRoutes.configResult);
                           } else {
-                            SnackbarHelper.showError('Failed to get config response', title: 'Error');
+                            SnackbarHelper.showError('Failed to send command', title: 'Error');
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -331,7 +403,7 @@ class NewDeviceScreen extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          'Config',
+                          'send data cmd',
                           style: TextStyle(fontSize: 12),
                         ),
                       ),
@@ -462,12 +534,14 @@ class NewDeviceScreen extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          final responseString = await bleController.sendConfigCommand();
-                          if (responseString != null && responseString.isNotEmpty) {
-                            // Navigate to result screen with the response
-                            Get.toNamed(AppRoutes.configResult, arguments: responseString);
+                          // Send Data command to RX characteristic
+                          final success = await bleController.sendCommand('data');
+                          if (success) {
+                            // Navigate to result screen immediately
+                            // The screen will subscribe to TX notifications
+                            Get.toNamed(AppRoutes.configResult);
                           } else {
-                            SnackbarHelper.showError('Failed to get config response', title: 'Error');
+                            SnackbarHelper.showError('Failed to send command', title: 'Error');
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -479,7 +553,7 @@ class NewDeviceScreen extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          'Config',
+                          'send data cmd',
                           style: TextStyle(fontSize: 12),
                         ),
                       ),

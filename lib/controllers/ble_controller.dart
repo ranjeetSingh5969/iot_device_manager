@@ -6,6 +6,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../models/ble_device.dart';
 import '../models/sensor_reading.dart';
+import '../models/ble_data.dart';
 
 enum BleConnectionState {
   disconnected,
@@ -50,6 +51,7 @@ class BleController extends GetxController {
   StreamSubscription<List<ScanResult>>? _scanSubscription;
   StreamSubscription<BluetoothConnectionState>? _connectionSubscription;
   StreamSubscription<List<int>>? _dataSubscription;
+  Timer? _connectionMonitorTimer;
 
   final List<int> _dataBuffer = [];
   Completer<String>? _dataCompleter;
@@ -59,6 +61,7 @@ class BleController extends GetxController {
 
   @override
   void onClose() {
+    _connectionMonitorTimer?.cancel();
     disconnect();
     stopScan();
     _dataStreamController.close();
@@ -275,6 +278,9 @@ class BleController extends GetxController {
       connectingDeviceMac.value = null; // Clear connecting state
       update();
       debugPrint('BLE: Connected and ready - Device: ${connectedDevice.value?.macAddress}');
+      
+      // Start monitoring connection state periodically
+      _startConnectionMonitoring();
     } catch (e, stackTrace) {
       debugPrint('BLE connection error: $e');
       debugPrint('Stack trace: $stackTrace');
@@ -293,7 +299,37 @@ class BleController extends GetxController {
     }
   }
 
+  void _startConnectionMonitoring() {
+    // Stop any existing monitor
+    _connectionMonitorTimer?.cancel();
+    
+    // Monitor connection state every 3 seconds
+    _connectionMonitorTimer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      if (_bluetoothDevice != null && connectionState.value == BleConnectionState.ready) {
+        try {
+          final currentState = await _bluetoothDevice!.connectionState.first;
+          if (currentState == BluetoothConnectionState.disconnected) {
+            debugPrint('BLE: Device disconnected detected by monitor');
+            _handleDisconnection();
+            timer.cancel();
+          }
+        } catch (e) {
+          debugPrint('BLE: Error checking connection state: $e');
+          // If we can't check the state, assume disconnected
+          _handleDisconnection();
+          timer.cancel();
+        }
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
   void _handleDisconnection() {
+    // Stop connection monitoring
+    _connectionMonitorTimer?.cancel();
+    _connectionMonitorTimer = null;
+    
     // Only handle disconnection if we're actually connected or ready
     // Don't clear state if we're in the middle of connecting
     if (connectionState.value == BleConnectionState.ready || 
@@ -308,46 +344,184 @@ class BleController extends GetxController {
     }
   }
 
+  /// Check if the data is valid sensor data (not "config done" or other invalid messages)
+  bool _isValidSensorData(String data) {
+    final trimmedData = data.trim().toLowerCase();
+    
+    // Filter out invalid messages
+    if (trimmedData.contains('config done') || 
+        trimmedData.contains('config') && trimmedData.length < 20) {
+      debugPrint('BLE: Ignoring invalid data: $data');
+      return false;
+    }
+    
+    // Check if it contains expected sensor data fields
+    // Format: "S.no: 4, temp: 29.25, time: 12:13:21, date: 02/01/26, Device ID: 12341234, MAC ID: FC012CF9F850"
+    final hasSerialNumber = trimmedData.contains('s.no') || trimmedData.contains('sno');
+    final hasTemperature = trimmedData.contains('temp');
+    final hasDeviceId = trimmedData.contains('device id') || trimmedData.contains('deviceid');
+    final hasMacId = trimmedData.contains('mac id') || trimmedData.contains('macid');
+    
+    final isValid = hasSerialNumber && hasTemperature && hasDeviceId && hasMacId;
+    
+    if (!isValid) {
+      debugPrint('BLE: Data does not match expected format: $data');
+    }
+    
+    return isValid;
+  }
+
   void _handleDataReceived(List<int> data) {
-    if (data.isEmpty) return;
+    if (data.isEmpty) {
+      debugPrint('BLE: Received empty data');
+      return;
+    }
     final rawBytes = List<int>.from(data);
     _dataBuffer.addAll(data);
     try {
       final dataString = utf8.decode(_dataBuffer);
-      if (dataString.contains('\n') || dataString.contains(';')) {
-        _dataCompleter?.complete(dataString);
-      final lines = dataString.split(RegExp(r'[;\n]')).where((s) => s.isNotEmpty);
+      debugPrint('BLE: Received data (${data.length} bytes): $dataString');
+      
       final currentDevice = connectedDevice.value;
-      for (final line in lines) {
-        SensorReading? parsedReading;
-        if (currentDevice != null) {
-          parsedReading = _parseSensorData(currentDevice.macAddress, line);
+      final deviceId = currentDevice?.macAddress ?? 'unknown';
+      final deviceName = currentDevice?.name ?? 'Unknown Device';
+      
+      // Check if we have a complete message (ends with newline or semicolon)
+      final hasCompleteMessage = dataString.contains('\n') || dataString.contains(';');
+      
+      if (hasCompleteMessage) {
+        // Process and emit each line
+        final lines = dataString.split(RegExp(r'[;\n]')).where((s) => s.isNotEmpty);
+        for (final line in lines) {
+          final trimmedLine = line.trim();
+          if (trimmedLine.isEmpty) continue;
+          
+          // Only process valid sensor data
+          if (!_isValidSensorData(trimmedLine)) {
+            continue;
+          }
+          
+          // Complete the completer if waiting for config response (only with valid data)
+          if (_dataCompleter != null && !_dataCompleter!.isCompleted) {
+            _dataCompleter!.complete(trimmedLine);
+          }
+          
+          SensorReading? parsedReading;
+          if (currentDevice != null) {
+            parsedReading = _parseSensorData(deviceId, trimmedLine);
+          }
+          
+          // Create BleData object
+          final bleData = BleData(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            deviceId: deviceId,
+            deviceName: deviceName,
+            rawData: trimmedLine,
+            rawBytes: rawBytes,
+            timestamp: DateTime.now(),
+            parsedReading: parsedReading,
+          );
+          
+          // Emit both as Map (for compatibility) and as BleData
+          _dataStreamController.add({
+            'rawData': trimmedLine,
+            'rawBytes': rawBytes,
+            'parsedReading': parsedReading,
+            'bleData': bleData,
+            'isValid': true,
+          });
+          
+          debugPrint('BLE: Emitted valid sensor data: $trimmedLine');
         }
-        _dataStreamController.add({
-          'rawData': line.trim(),
-          'rawBytes': List<int>.from(data),
-          'parsedReading': parsedReading,
-        });
-      }
         _dataBuffer.clear();
       } else {
-        _dataStreamController.add({
-          'rawData': dataString,
-          'rawBytes': rawBytes,
-          'parsedReading': null,
-        });
+        // For data without delimiter, check if it's complete and valid
+        // Format: "S.no: 4, temp: 29.25, time: 12:13:21, date: 02/01/26, Device ID: 12341234, MAC ID: FC012CF9F850"
+        
+        // Check if data looks complete (has all required fields and reasonable length)
+        final looksComplete = dataString.length > 50 && 
+            dataString.contains('S.no') && 
+            dataString.contains('temp') && 
+            dataString.contains('Device ID') &&
+            dataString.contains('MAC ID');
+        
+        if (looksComplete && _isValidSensorData(dataString)) {
+          // Complete the completer if waiting for config response (only with valid data)
+          if (_dataCompleter != null && !_dataCompleter!.isCompleted) {
+            _dataCompleter!.complete(dataString);
+          }
+          
+          SensorReading? parsedReading;
+          if (currentDevice != null) {
+            parsedReading = _parseSensorData(deviceId, dataString);
+          }
+          
+          // Create BleData object
+          final bleData = BleData(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            deviceId: deviceId,
+            deviceName: deviceName,
+            rawData: dataString,
+            rawBytes: rawBytes,
+            timestamp: DateTime.now(),
+            parsedReading: parsedReading,
+          );
+          
+          // Emit both as Map (for compatibility) and as BleData
+          _dataStreamController.add({
+            'rawData': dataString,
+            'rawBytes': rawBytes,
+            'parsedReading': parsedReading,
+            'bleData': bleData,
+            'isValid': true,
+          });
+          
+          debugPrint('BLE: Emitted valid sensor data (no delimiter): $dataString');
+          // Clear buffer after emitting
+          _dataBuffer.clear();
+        } else {
+          // Data might be incomplete, keep in buffer and wait for more
+          debugPrint('BLE: Data appears incomplete, keeping in buffer: $dataString');
+        }
       }
-    } catch (e) {
-      debugPrint('Error decoding data: $e');
+    } catch (e, stackTrace) {
+      debugPrint('BLE: Error decoding data: $e');
+      debugPrint('BLE: Stack trace: $stackTrace');
+      
+      // Complete completer with error indication if waiting
+      if (_dataCompleter != null && !_dataCompleter!.isCompleted) {
+        _dataCompleter!.complete('');
+      }
+      
+      final currentDevice = connectedDevice.value;
+      final deviceId = currentDevice?.macAddress ?? 'unknown';
+      final deviceName = currentDevice?.name ?? 'Unknown Device';
+      
+      // Create error BleData
+      final errorBleData = BleData(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        deviceId: deviceId,
+        deviceName: deviceName,
+        rawData: 'Error: Failed to decode data (${data.length} bytes)',
+        rawBytes: rawBytes,
+        timestamp: DateTime.now(),
+        parsedReading: null,
+      );
+      
       _dataStreamController.add({
-        'rawData': 'Binary data (${data.length} bytes)',
+        'rawData': 'Error: Failed to decode data (${data.length} bytes)',
         'rawBytes': rawBytes,
         'parsedReading': null,
+        'bleData': errorBleData,
       });
     }
   }
 
   Future<void> disconnect() async {
+    // Stop connection monitoring
+    _connectionMonitorTimer?.cancel();
+    _connectionMonitorTimer = null;
+    
     await _connectionSubscription?.cancel();
     _connectionSubscription = null;
     await _dataSubscription?.cancel();
@@ -362,6 +536,7 @@ class BleController extends GetxController {
     _commandCharacteristic = null;
     _dataCharacteristic = null;
     connectionState.value = BleConnectionState.disconnected;
+    connectingDeviceMac.value = null;
     update();
   }
 
@@ -393,50 +568,7 @@ class BleController extends GetxController {
     }
   }
 
-  /// Send config command to the device (writes to RX, listens to TX)
-  /// Returns the response string if successful, null otherwise
-  Future<String?> sendConfigCommand({String configCommand = 'Data'}) async {
-    if (connectionState.value != BleConnectionState.ready) {
-      debugPrint('BLE: Cannot send config - device not ready');
-      return null;
-    }
-    
-    if (_commandCharacteristic == null) {
-      debugPrint('BLE: Cannot send config - command characteristic not found');
-      return null;
-    }
-    
-    try {
-      // Write config command to RX characteristic
-      final commandBytes = utf8.encode('$configCommand\n');
-      await _commandCharacteristic!.write(commandBytes, withoutResponse: false);
-      debugPrint('BLE: Sent config command: $configCommand');
-      
-      // Read from TX characteristic to get response
-      if (_dataCharacteristic != null && _dataCharacteristic!.properties.read) {
-        try {
-          // Wait a bit for the device to process the command
-          await Future.delayed(const Duration(milliseconds: 200));
-          final response = await _dataCharacteristic!.read();
-          final responseString = utf8.decode(response);
-          debugPrint('BLE: Config response: $responseString');
-          
-          // Return the response string
-          return responseString.trim();
-        } catch (e) {
-          debugPrint('BLE: Failed to read config response: $e');
-          return null;
-        }
-      } else {
-        // If read is not available, return null
-        debugPrint('BLE: TX characteristic does not support read');
-        return null;
-      }
-    } catch (e) {
-      debugPrint('BLE: Error sending config command: $e');
-      return null;
-    }
-  }
+
 
   /// Read from TX characteristic
   Future<String?> readCharacteristic() async {

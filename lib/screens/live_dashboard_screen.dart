@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import '../controllers/dashboard_controller.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimensions.dart';
@@ -39,7 +41,7 @@ class LiveDashboardScreen extends StatelessWidget {
             const SizedBox(height: AppDimensions.spacingXLarge),
             _buildChartSection(controller),
             const SizedBox(height: AppDimensions.spacingXLarge),
-            _buildSummaryCards(controller),
+            Obx(() => _buildSummaryCards(controller)),
           ],
         ),
       ),
@@ -373,31 +375,122 @@ class LiveDashboardScreen extends StatelessWidget {
                   ),
                 );
               }
+              
+              // Sort readings by timestamp
+              final sortedReadings = List.from(controller.readings)
+                ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+              
+              // Prepare chart data
+              final spots = sortedReadings.asMap().entries.map((entry) {
+                final index = entry.key.toDouble();
+                final reading = entry.value;
+                return FlSpot(index, reading.temperature);
+              }).toList();
+              
+              // Get min and max temperatures for Y axis
+              final temperatures = sortedReadings.map((r) => r.temperature).toList();
+              final minTemp = temperatures.reduce((a, b) => a < b ? a : b);
+              final maxTemp = temperatures.reduce((a, b) => a > b ? a : b);
+              final tempRange = maxTemp - minTemp;
+              final yMin = (minTemp - (tempRange * 0.1)).clamp(0.0, double.infinity);
+              final yMax = maxTemp + (tempRange * 0.1);
+              
+              // Prepare X axis labels (show time for first, middle, last)
+              String getXLabel(int index) {
+                if (index == 0 || index == sortedReadings.length - 1 || index == sortedReadings.length ~/ 2) {
+                  final reading = sortedReadings[index];
+                  return DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(reading.timestamp));
+                }
+                return '';
+              }
+              
               return SizedBox(
-                height: 200,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.show_chart,
-                        size: 64,
-                        color: AppColors.primaryBlue,
+                height: 250,
+                child: LineChart(
+                  LineChartData(
+                    gridData: FlGridData(
+                      show: true,
+                      drawVerticalLine: false,
+                      horizontalInterval: (yMax - yMin) / 5,
+                      getDrawingHorizontalLine: (value) {
+                        return FlLine(
+                          color: AppColors.borderGrey.withValues(alpha: 0.3),
+                          strokeWidth: 1,
+                        );
+                      },
+                    ),
+                    titlesData: FlTitlesData(
+                      show: true,
+                      rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
                       ),
-                      const SizedBox(height: AppDimensions.spacingMedium),
-                      const Text(
-                        'Chart visualization',
-                        style: TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 14,
+                      topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 30,
+                          interval: sortedReadings.length > 10 ? (sortedReadings.length / 3).ceilToDouble() : 1,
+                          getTitlesWidget: (value, meta) {
+                            final index = value.toInt();
+                            if (index >= 0 && index < sortedReadings.length) {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  getXLabel(index),
+                                  style: const TextStyle(
+                                    color: AppColors.textGrey,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              );
+                            }
+                            return const Text('');
+                          },
                         ),
                       ),
-                      const SizedBox(height: AppDimensions.spacingSmall),
-                      Text(
-                        '${controller.readings.length} readings',
-                        style: const TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 12,
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 50,
+                          interval: (yMax - yMin) / 5,
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              '${value.toStringAsFixed(1)}°',
+                              style: const TextStyle(
+                                color: AppColors.textGrey,
+                                fontSize: 10,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    borderData: FlBorderData(
+                      show: true,
+                      border: Border.all(
+                        color: AppColors.borderGrey,
+                        width: 1,
+                      ),
+                    ),
+                    minX: 0,
+                    maxX: (sortedReadings.length - 1).toDouble(),
+                    minY: yMin,
+                    maxY: yMax,
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: spots,
+                        isCurved: true,
+                        color: AppColors.primaryBlue,
+                        barWidth: 3,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(
+                          show: false,
+                        ),
+                        belowBarData: BarAreaData(
+                          show: true,
+                          color: AppColors.primaryBlue.withValues(alpha: 0.1),
                         ),
                       ),
                     ],
@@ -439,15 +532,21 @@ class LiveDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildSummaryCards(DashboardController controller) {
+    // Access reactive values to trigger rebuild
+    final avgTemp = controller.avgTemperature.value;
+    final avgHum = controller.avgHumidity.value;
+    final readingsCount = controller.readings.length;
+    
     return Row(
       children: [
         Expanded(
           child: _buildSummaryCard(
             icon: Icons.thermostat,
             iconColor: AppColors.error,
-            value: controller.avgTemperature.value.toStringAsFixed(1),
+            value: avgTemp > 0 ? avgTemp.toStringAsFixed(1) : '0.0',
             unit: '°C',
             label: 'Avg Temperature',
+            showEmpty: readingsCount == 0,
           ),
         ),
         const SizedBox(width: AppDimensions.spacingMedium),
@@ -455,9 +554,10 @@ class LiveDashboardScreen extends StatelessWidget {
           child: _buildSummaryCard(
             icon: Icons.water_drop,
             iconColor: AppColors.primaryBlue,
-            value: controller.avgHumidity.value.toStringAsFixed(1),
+            value: avgHum > 0 ? avgHum.toStringAsFixed(1) : '0.0',
             unit: '%',
             label: 'Avg Humidity',
+            showEmpty: readingsCount == 0,
           ),
         ),
       ],
@@ -470,6 +570,7 @@ class LiveDashboardScreen extends StatelessWidget {
     required String value,
     required String unit,
     required String label,
+    bool showEmpty = false,
   }) {
     return Card(
       elevation: 0,
@@ -489,20 +590,21 @@ class LiveDashboardScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  value,
-                  style: const TextStyle(
+                  showEmpty ? '--' : value,
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textBlack,
+                    color: showEmpty ? AppColors.textGrey : AppColors.textBlack,
                   ),
                 ),
-                Text(
-                  unit,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: AppColors.textBlack,
+                if (!showEmpty)
+                  Text(
+                    unit,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textBlack,
+                    ),
                   ),
-                ),
               ],
             ),
             const SizedBox(height: AppDimensions.spacingSmall),

@@ -33,8 +33,12 @@ class DashboardController extends GetxController {
       availableDevices.value = devices;
       if (devices.isNotEmpty && selectedDevices.isEmpty) {
         selectedDevices.value = [devices.first];
+        // Load chart data for the first device
+        await loadChartData();
+      } else if (selectedDevices.isNotEmpty) {
+        // Reload chart data if devices are already selected
+        await loadChartData();
       }
-      await loadChartData();
     } catch (e) {
       // Handle error
     } finally {
@@ -56,7 +60,11 @@ class DashboardController extends GetxController {
       currentList.add(device);
     }
     selectedDevices.value = currentList;
-    loadChartData();
+    // Load chart data and ensure averages are calculated
+    loadChartData().then((_) {
+      // Force reactive update
+      update();
+    });
   }
 
   Future<void> loadChartData() async {
@@ -93,6 +101,8 @@ class DashboardController extends GetxController {
         );
         allReadings.addAll(deviceReadings);
       }
+      // Sort readings by timestamp
+      allReadings.sort((a, b) => a.timestamp.compareTo(b.timestamp));
       readings.value = allReadings;
       _calculateAverages();
     } catch (e) {
@@ -114,8 +124,12 @@ class DashboardController extends GetxController {
       totalTemp += reading.temperature;
       totalHumidity += reading.humidity;
     }
-    avgTemperature.value = totalTemp / readings.length;
-    avgHumidity.value = totalHumidity / readings.length;
+    final calculatedAvgTemp = totalTemp / readings.length;
+    final calculatedAvgHum = totalHumidity / readings.length;
+    
+    // Update reactive values - this will trigger Obx rebuilds
+    avgTemperature.value = calculatedAvgTemp;
+    avgHumidity.value = calculatedAvgHum;
   }
 }
 
