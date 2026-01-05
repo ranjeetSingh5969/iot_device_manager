@@ -1,24 +1,26 @@
 import 'package:get/get.dart';
-import '../screens/login_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/live_dashboard_screen.dart';
-import '../screens/new_device_screen.dart';
-import '../screens/download_data_screen.dart';
-import '../screens/onboarding_screen.dart';
-import '../screens/device_list_screen.dart';
-import '../screens/ble_scan_screen.dart';
-import '../screens/device_info_screen.dart';
-import '../screens/dashboard_screen.dart';
-import '../screens/history_screen.dart';
-import '../screens/data_sync_screen.dart';
-import '../screens/report_generator_screen.dart';
-import '../screens/config_result_screen.dart';
-import '../bindings/auth_binding.dart';
-import '../bindings/dashboard_binding.dart';
-import '../bindings/new_device_binding.dart';
-import '../bindings/download_data_binding.dart';
-import '../bindings/onboarding_binding.dart';
-import '../bindings/report_generator_binding.dart';
+import '../features/login/login_screen.dart';
+import '../features/login/auth_binding.dart';
+import '../features/home/home_screen.dart';
+import '../features/live_dashboard/live_dashboard_screen.dart';
+import '../features/live_dashboard/dashboard_binding.dart';
+import '../features/new_device/new_device_screen.dart';
+import '../features/new_device/new_device_binding.dart';
+import '../features/download_data/download_data_screen.dart';
+import '../features/download_data/download_data_binding.dart';
+import '../features/onboarding/onboarding_screen.dart';
+import '../features/onboarding/onboarding_binding.dart';
+import '../features/device_list/device_list_screen.dart';
+import '../features/ble_scan/ble_scan_screen.dart';
+import '../features/device_info/device_info_screen.dart';
+import '../features/dashboard/dashboard_screen.dart';
+import '../features/data_sync/data_sync_screen.dart';
+import '../features/report_generator/report_generator_screen.dart';
+import '../features/report_generator/report_generator_binding.dart';
+import '../features/config_result/config_result_screen.dart';
+import '../features/config_result/config_result_binding.dart';
+import '../features/live_dashboard/history_screen.dart';
+import '../features/live_dashboard/history_binding.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -80,10 +82,8 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.history,
-      page: () {
-        final device = Get.arguments;
-        return HistoryScreen(device: device);
-      },
+      page: () => const HistoryScreen(),
+      binding: HistoryBinding(),
     ),
     GetPage(
       name: AppRoutes.dataSync,
@@ -100,6 +100,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.configResult,
       page: () => const ConfigResultScreen(),
+      binding: ConfigResultBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.history,
+      page: () => const HistoryScreen(),
+      binding: HistoryBinding(),
     ),
   ];
 }

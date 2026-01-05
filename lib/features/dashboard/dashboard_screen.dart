@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../constants/app_dimensions.dart';
-import '../models/device.dart';
-import '../models/sensor_reading.dart';
-import '../controllers/ble_controller.dart';
-import '../services/database_service.dart';
-import '../routes/app_routes.dart';
-import '../constants/app_strings.dart';
-import '../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
+import '../../models/device.dart';
+import '../../models/sensor_reading.dart';
+import '../../shared/controllers/ble_controller.dart';
+import '../../services/database_service.dart';
+import '../../routes/app_routes.dart';
+import '../../constants/app_strings.dart';
+import '../../constants/app_colors.dart';
 
 class DashboardScreen extends StatefulWidget {
   final Device device;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/report_generator_controller.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
+import 'report_generator_controller.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
 
 class ReportGeneratorScreen extends StatelessWidget {
   const ReportGeneratorScreen({super.key});

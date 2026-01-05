@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import '../models/device.dart';
-import '../services/database_service.dart';
-import '../models/sensor_reading.dart';
+import '../../models/device.dart';
+import '../../services/database_service.dart';
+import '../../models/sensor_reading.dart';
 
 enum DateRange {
   today,

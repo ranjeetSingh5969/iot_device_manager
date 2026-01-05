@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../controllers/onboarding_controller.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
+import 'onboarding_controller.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
 
 class MacAddressFormatter extends TextInputFormatter {
   @override
@@ -793,8 +793,9 @@ class OnboardingScreen extends StatelessWidget {
             children: controller.availableDevices.map((device) {
               final isSelected = controller.selectedDevices.contains(device);
               return CheckboxListTile(
-                title: Text(device.displayName),
-                subtitle: Text(device.id),
+                title: Text(device.displayName,style: TextStyle(color: Colors.black87),),
+
+                subtitle: Text(device.id,style: TextStyle(color: Colors.black54),),
                 value: isSelected,
                 onChanged: (_) => controller.toggleDeviceSelection(device),
                 activeColor: AppColors.primaryBlue,

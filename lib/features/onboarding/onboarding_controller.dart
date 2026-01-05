@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter/material.dart';
-import '../models/device.dart';
-import '../models/ble_device.dart';
-import '../services/database_service.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
-import 'ble_controller.dart';
+import '../../models/device.dart';
+import '../../models/ble_device.dart';
+import '../../services/database_service.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
+import '../../shared/controllers/ble_controller.dart';
 
 enum OnboardingTab {
   deviceDetails,
@@ -50,6 +50,8 @@ class OnboardingController extends GetxController {
   final RxString sensorNumberError = ''.obs;
   final RxBool isBluetoothEnabled = false.obs;
   final RxBool isScanningBluetooth = false.obs;
+  final Rxn<String> connectingDeviceMac = Rxn<String>(); // Track which device is being connected
+  final RxBool isConnecting = false.obs;
   
   final TextEditingController macAddressController = TextEditingController();
   final TextEditingController startLocationController = TextEditingController();
@@ -178,8 +180,7 @@ class OnboardingController extends GetxController {
       Get.snackbar(
         'Error',
         'Failed to check Bluetooth status: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Get.theme.colorScheme.primary,
+        snackPosition: SnackPosition.BOTTOM, backgroundColor: Get.theme.colorScheme.primary,
         colorText: Get.theme.colorScheme.onPrimary,
       );
     }
@@ -209,8 +210,7 @@ class OnboardingController extends GetxController {
       Get.snackbar(
         'Error',
         'Failed to scan for devices: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Get.theme.colorScheme.primary,
+        snackPosition: SnackPosition.BOTTOM, backgroundColor: Get.theme.colorScheme.primary,
         colorText: Get.theme.colorScheme.onPrimary,
       );
     }
@@ -241,6 +241,12 @@ class OnboardingController extends GetxController {
               const SizedBox(height: AppDimensions.spacingMedium),
               Expanded(
                 child: Obx(() {
+                  // Observe connection state and discovered devices to trigger rebuilds
+                  final connectionState = bleController.connectionState.value;
+                  final connectedDevice = bleController.connectedDevice.value;
+                  final currentConnectingMac = connectingDeviceMac.value;
+                  final currentlyConnecting = isConnecting.value;
+                  
                   if (bleController.discoveredDevices.isEmpty) {
                     return const Center(
                       child: Text(
@@ -254,8 +260,23 @@ class OnboardingController extends GetxController {
                     itemCount: bleController.discoveredDevices.length,
                     itemBuilder: (context, index) {
                       final device = bleController.discoveredDevices[index];
+                      final isConnectingThisDevice = currentConnectingMac == device.macAddress.toUpperCase() && currentlyConnecting;
+                      final isConnected = connectionState == BleConnectionState.ready &&
+                          connectedDevice?.macAddress.toUpperCase() == device.macAddress.toUpperCase();
+                      
                       return ListTile(
-                        leading: const Icon(Icons.bluetooth, color: AppColors.primaryBlue),
+                        leading: isConnectingThisDevice
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
+                                ),
+                              )
+                            : isConnected
+                                ? const Icon(Icons.check_circle, color: AppColors.secondaryGreen)
+                                : const Icon(Icons.bluetooth, color: AppColors.primaryBlue),
                         title: Text(
                           device.name,
                           style: const TextStyle(
@@ -263,18 +284,49 @@ class OnboardingController extends GetxController {
                             color: AppColors.textBlack,
                           ),
                         ),
-                        subtitle: Text(
-                          device.macAddress,
-                          style: const TextStyle(color: AppColors.textGrey),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              device.macAddress,
+                              style: const TextStyle(color: AppColors.textGrey),
+                            ),
+                            if (isConnectingThisDevice)
+                              const Padding(
+                                padding: EdgeInsets.only(top: 4),
+                                child: Text(
+                                  'Connecting...',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.primaryBlue,
+                                  ),
+                                ),
+                              )
+                            else if (isConnected)
+                              const Padding(
+                                padding: EdgeInsets.only(top: 4),
+                                child: Text(
+                                  'Connected',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.secondaryGreen,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         trailing: Text(
                           '${device.rssi} dBm',
                           style: const TextStyle(color: AppColors.textGrey),
                         ),
-                        onTap: () async {
-                          Get.back();
-                          await _connectToDevice(bleController, device);
-                        },
+                        onTap: isConnectingThisDevice || isConnected
+                            ? null
+                            : () async {
+                                Get.back();
+                                await _connectToDevice(bleController, device);
+                              },
                       );
                     },
                   );
@@ -317,15 +369,14 @@ class OnboardingController extends GetxController {
 
   Future<void> _connectToDevice(BleController bleController, BleDevice device) async {
     try {
-      Get.snackbar(
-        'Connecting',
-        'Connecting to ${device.name}...',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 2),
-        backgroundColor: Get.theme.colorScheme.primary,
-        colorText: Get.theme.colorScheme.onPrimary,
-      );
+      isConnecting.value = true;
+      connectingDeviceMac.value = device.macAddress.toUpperCase();
+      
       await bleController.connect(device);
+      
+      // Wait a bit for connection state to update
+      await Future.delayed(const Duration(milliseconds: 500));
+      
       if (bleController.connectionState.value == BleConnectionState.ready) {
         macAddress.value = device.macAddress;
         Get.snackbar(
@@ -352,6 +403,9 @@ class OnboardingController extends GetxController {
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,
       );
+    } finally {
+      isConnecting.value = false;
+      connectingDeviceMac.value = null;
     }
   }
 

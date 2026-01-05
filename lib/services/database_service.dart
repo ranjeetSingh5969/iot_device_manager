@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/device.dart';
@@ -150,16 +151,69 @@ class DatabaseService {
     return readings.isNotEmpty ? readings.first : null;
   }
 
+  /// Check if a reading with the same deviceId and timestamp already exists
+  Future<bool> readingExists(String deviceId, int timestamp) async {
+    final result = await db.query(
+      'sensor_readings',
+      where: 'deviceId = ? AND timestamp = ?',
+      whereArgs: [deviceId, timestamp],
+      limit: 1,
+    );
+    return result.isNotEmpty;
+  }
+
   Future<void> insertReading(SensorReading reading) async {
+    // Check if a reading with the same deviceId and timestamp already exists
+    final exists = await readingExists(reading.deviceId, reading.timestamp);
+    if (exists) {
+      // Skip inserting duplicate
+      return;
+    }
     await db.insert('sensor_readings', reading.toMap());
   }
 
   Future<void> insertReadings(List<SensorReading> readings) async {
+    if (readings.isEmpty) return;
+    
     final batch = db.batch();
-    for (final reading in readings) {
-      batch.insert('sensor_readings', reading.toMap());
+    int insertedCount = 0;
+    int skippedCount = 0;
+    
+    // Get all existing timestamps for the devices in this batch to check duplicates efficiently
+    final deviceIds = readings.map((r) => r.deviceId).toSet().toList();
+    final existingReadings = <String, Set<int>>{};
+    
+    for (final deviceId in deviceIds) {
+      final deviceReadings = await db.query(
+        'sensor_readings',
+        columns: ['timestamp'],
+        where: 'deviceId = ?',
+        whereArgs: [deviceId],
+      );
+      existingReadings[deviceId] = deviceReadings
+          .map((r) => r['timestamp'] as int)
+          .toSet();
     }
-    await batch.commit(noResult: true);
+    
+    for (final reading in readings) {
+      final deviceTimestamps = existingReadings[reading.deviceId] ?? <int>{};
+      if (deviceTimestamps.contains(reading.timestamp)) {
+        skippedCount++;
+        continue;
+      }
+      
+      batch.insert('sensor_readings', reading.toMap());
+      deviceTimestamps.add(reading.timestamp);
+      insertedCount++;
+    }
+    
+    if (insertedCount > 0) {
+      await batch.commit(noResult: true);
+    }
+    
+    if (skippedCount > 0) {
+      debugPrint('DatabaseService: Skipped $skippedCount duplicate readings (same timestamp)');
+    }
   }
 
   Future<int> getReadingCount(String deviceId) async {

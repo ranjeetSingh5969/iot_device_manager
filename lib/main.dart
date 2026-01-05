@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'services/database_service.dart';
-import 'controllers/auth_controller.dart';
-import 'controllers/ble_controller.dart';
+import 'shared/controllers/auth_controller.dart';
+import 'shared/controllers/ble_controller.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'constants/app_strings.dart';

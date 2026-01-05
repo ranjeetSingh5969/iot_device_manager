@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/auth_controller.dart';
-import '../constants/app_strings.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
+import '../../shared/controllers/auth_controller.dart';
+import '../../constants/app_strings.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

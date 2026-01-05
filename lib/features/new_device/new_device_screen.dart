@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import '../controllers/new_device_controller.dart';
-import '../controllers/ble_controller.dart';
-import '../models/device.dart';
-import '../models/ble_device.dart';
-import '../services/database_service.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
-import '../routes/app_routes.dart';
-import '../utils/snackbar_helper.dart';
+import 'new_device_controller.dart';
+import '../../shared/controllers/ble_controller.dart';
+import '../../models/device.dart';
+import '../../models/ble_device.dart';
+import '../../services/database_service.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
+import '../../routes/app_routes.dart';
+import '../../utils/snackbar_helper.dart';
 
 class NewDeviceScreen extends StatefulWidget {
   const NewDeviceScreen({super.key});
@@ -59,10 +59,7 @@ class _NewDeviceScreenState extends State<NewDeviceScreen> {
         centerTitle: true,
         actions: [
           Obx(() {
-            // Explicitly observe selectedTab to trigger rebuilds
-            final selectedTab = controller.selectedTab.value;
-            
-            if (selectedTab == DeviceTab.nearby) {
+            if (controller.selectedTab.value == DeviceTab.nearby) {
               return IconButton(
                 icon: bleController.isScanning
                     ? const SizedBox(
@@ -83,28 +80,6 @@ class _NewDeviceScreenState extends State<NewDeviceScreen> {
                         controller.startScan();
                       },
                 tooltip: 'Rescan',
-              );
-            } else if (selectedTab == DeviceTab.onboarded) {
-              return IconButton(
-                icon: controller.isLoading.value
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
-                        ),
-                      )
-                    : const Icon(
-                        Icons.refresh,
-                        color: AppColors.primaryBlue,
-                      ),
-                onPressed: controller.isLoading.value
-                    ? null
-                    : () {
-                        controller.loadOnboardedDevices();
-                      },
-                tooltip: 'Refresh',
               );
             }
             return const SizedBox.shrink();
@@ -343,19 +318,17 @@ class _NewDeviceScreenState extends State<NewDeviceScreen> {
       final isConnected = connectionState == BleConnectionState.ready &&
           connectedDevice?.macAddress.toUpperCase() ==
               device.macAddress.toUpperCase();
-      // Show connecting if connectingDeviceMac matches this device, regardless of connectionState
-      // (connectionState might be "scanning" while we're looking for this device)
-      final isConnecting = connectingDeviceMac?.toUpperCase() == device.macAddress.toUpperCase() &&
-          (connectionState == BleConnectionState.connecting ||
-          connectionState == BleConnectionState.discoveringServices ||
-          connectionState == BleConnectionState.scanning);
+      // Only show connecting for this specific device
+      final isConnecting = (connectionState == BleConnectionState.connecting ||
+          connectionState == BleConnectionState.discoveringServices) &&
+          connectingDeviceMac == device.macAddress.toUpperCase();
       
       // Check if this onboarded device is also in nearby devices
       final isNearby = discoveredDevices.any(
         (d) => d.macAddress.toUpperCase() == device.macAddress.toUpperCase(),
       );
       
-        return Container(
+      return Container(
           margin: const EdgeInsets.only(bottom: AppDimensions.spacingMedium),
           decoration: BoxDecoration(
             color: AppColors.backgroundWhite,
@@ -478,7 +451,7 @@ class _NewDeviceScreenState extends State<NewDeviceScreen> {
                           ),
                         ),
                         child: const Text(
-                          'send data cmd',
+                          'Sync data',
                           style: TextStyle(fontSize: 12),
                         ),
                       ),
@@ -670,7 +643,7 @@ class _NewDeviceScreenState extends State<NewDeviceScreen> {
                           ),
                         ),
                         child: const Text(
-                          'send data cmd',
+                          'Sync Data',
                           style: TextStyle(fontSize: 12),
                         ),
                       ),

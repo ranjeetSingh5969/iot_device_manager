@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/ble_device.dart';
-import '../models/device.dart';
-import '../controllers/ble_controller.dart';
-import '../services/database_service.dart';
-import '../constants/app_strings.dart';
+import '../../models/ble_device.dart';
+import '../../models/device.dart';
+import '../../shared/controllers/ble_controller.dart';
+import '../../services/database_service.dart';
+import '../../constants/app_strings.dart';
 
 class BleScanScreen extends StatefulWidget {
   const BleScanScreen({super.key});

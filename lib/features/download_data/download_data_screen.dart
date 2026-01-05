@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../controllers/download_data_controller.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
+import 'download_data_controller.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
 
 class DownloadDataScreen extends StatelessWidget {
   const DownloadDataScreen({super.key});

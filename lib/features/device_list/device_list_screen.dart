@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/device.dart';
-import '../controllers/auth_controller.dart';
-import '../services/database_service.dart';
-import '../routes/app_routes.dart';
-import '../constants/app_strings.dart';
+import '../../models/device.dart';
+import '../../shared/controllers/auth_controller.dart';
+import '../../services/database_service.dart';
+import '../../routes/app_routes.dart';
+import '../../constants/app_strings.dart';
 
 class DeviceListScreen extends StatefulWidget {
   const DeviceListScreen({super.key});

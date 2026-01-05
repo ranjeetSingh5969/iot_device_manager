@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import '../models/consignment.dart';
-import '../models/device.dart';
-import '../services/database_service.dart';
+import '../../models/consignment.dart';
+import '../../models/device.dart';
+import '../../services/database_service.dart';
 
 class ReportGeneratorController extends GetxController {
   final RxList<Consignment> consignments = <Consignment>[].obs;
@@ -110,8 +110,7 @@ class ReportGeneratorController extends GetxController {
       Get.snackbar(
         'Error',
         'Please select at least one sensor',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Get.theme.colorScheme.primary,
+        snackPosition: SnackPosition.BOTTOM, backgroundColor: Get.theme.colorScheme.primary,
         colorText: Get.theme.colorScheme.onPrimary,
       );
       return;

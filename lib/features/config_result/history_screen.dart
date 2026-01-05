@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../models/device.dart';
-import '../models/sensor_reading.dart';
-import '../services/database_service.dart';
-import '../constants/app_strings.dart';
+import '../../models/device.dart';
+import '../../models/sensor_reading.dart';
+import '../../services/database_service.dart';
+import '../../constants/app_strings.dart';
 
 class HistoryScreen extends StatefulWidget {
   final Device device;

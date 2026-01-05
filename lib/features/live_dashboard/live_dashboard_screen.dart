@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import '../controllers/dashboard_controller.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_dimensions.dart';
+import 'dashboard_controller.dart';
+import 'history_controller.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_dimensions.dart';
+import '../../routes/app_routes.dart';
 
 class LiveDashboardScreen extends StatelessWidget {
   const LiveDashboardScreen({super.key});
@@ -29,6 +31,38 @@ class LiveDashboardScreen extends StatelessWidget {
         backgroundColor: AppColors.backgroundWhite,
         elevation: 0,
         centerTitle: true,
+        actions: [
+          Obx(() {
+            if (controller.selectedDevices.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return IconButton(
+              icon: const Icon(Icons.history, color: AppColors.primaryBlue),
+              onPressed: () {
+                // Navigate to history screen with selected devices
+                final devices = controller.selectedDevices;
+                if (devices.isNotEmpty) {
+                  // Initialize history controller if not already initialized
+                  HistoryController historyController;
+                  try {
+                    historyController = Get.find<HistoryController>();
+                  } catch (e) {
+                    // Controller not found, initialize it
+                    historyController = Get.put(HistoryController());
+                  }
+                  
+                  if (devices.length == 1) {
+                    historyController.loadHistoryForDevice(devices.first);
+                  } else {
+                    historyController.loadHistoryForDevices(devices);
+                  }
+                  Get.toNamed(AppRoutes.history);
+                }
+              },
+              tooltip: 'View History',
+            );
+          }),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppDimensions.screenPadding),
@@ -135,13 +169,65 @@ class LiveDashboardScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Select Devices (tap to compare)',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textBlack,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Select Devices (tap to compare)',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textBlack,
+              ),
+            ),
+            Obx(() {
+              if (controller.selectedDevices.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return ElevatedButton.icon(
+                onPressed: () {
+                  // Navigate to history screen with selected devices
+                  final devices = controller.selectedDevices;
+                  if (devices.isNotEmpty) {
+                    // Initialize history controller if not already initialized
+                    HistoryController historyController;
+                    try {
+                      historyController = Get.find<HistoryController>();
+                    } catch (e) {
+                      // Controller not found, initialize it
+                      historyController = Get.put(HistoryController());
+                    }
+                    
+                    if (devices.length == 1) {
+                      historyController.loadHistoryForDevice(devices.first);
+                    } else {
+                      historyController.loadHistoryForDevices(devices);
+                    }
+                    Get.toNamed(AppRoutes.history);
+                  }
+                },
+                icon: const Icon(Icons.history, size: 18),
+                label: const Text(
+                  'View History',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondaryGreen,
+                  foregroundColor: AppColors.textWhite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimensions.paddingMedium,
+                    vertical: AppDimensions.paddingSmall,
+                  ),
+                ),
+              );
+            }),
+          ],
         ),
         const SizedBox(height: AppDimensions.spacingMedium),
         Obx(() => InkWell(
