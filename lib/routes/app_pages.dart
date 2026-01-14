@@ -21,6 +21,7 @@ import '../features/config_result/config_result_screen.dart';
 import '../features/config_result/config_result_binding.dart';
 import '../features/live_dashboard/history_screen.dart';
 import '../features/live_dashboard/history_binding.dart';
+import '../features/report_generator/trip_report_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -103,9 +104,8 @@ class AppPages {
       binding: ConfigResultBinding(),
     ),
     GetPage(
-      name: AppRoutes.history,
-      page: () => const HistoryScreen(),
-      binding: HistoryBinding(),
+      name: AppRoutes.tripReport,
+      page: () => const TripReportScreen(),
     ),
   ];
 }

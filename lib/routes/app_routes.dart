@@ -16,5 +16,6 @@ class AppRoutes {
   static const String dataSync = '/data-sync';
   static const String reportGenerator = '/report-generator';
   static const String configResult = '/config-result';
+  static const String tripReport = '/trip-report';
 }
 

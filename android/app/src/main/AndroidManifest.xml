@@ -12,6 +12,10 @@
     <!-- Internet permission for API calls -->
     <uses-permission android:name="android.permission.INTERNET"/>
     
+    <!-- Storage permission for downloading CSV files (Android 10 and below) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29"/>
+    
     <!-- BLE feature -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 

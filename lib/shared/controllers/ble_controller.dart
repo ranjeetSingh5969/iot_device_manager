@@ -547,6 +547,35 @@ class BleController extends GetxController {
     return await _sendCommand(command);
   }
 
+
+  Future<bool> sendCommandToEsp32(String command) async {
+    if (_commandCharacteristic == null) return false;
+
+    final data = utf8.encode(command);
+    const int chunkSize = 180;
+
+    try {
+      for (int i = 0; i < data.length; i += chunkSize) {
+        final chunk = data.sublist(
+          i,
+          (i + chunkSize > data.length) ? data.length : i + chunkSize,
+        );
+
+        await _commandCharacteristic!.write(
+          chunk,
+          withoutResponse: true, // 🚀 ESP32 prefers this
+        );
+
+        // ESP32 buffer safety delay
+        await Future.delayed(const Duration(milliseconds: 10));
+      }
+      return true;
+    } catch (e) {
+      debugPrint('ESP32 write failed: $e');
+      return false;
+    }
+  }
+
   /// Internal method to send command
   Future<bool> _sendCommand(String command) async {
     if (connectionState.value != BleConnectionState.ready) {
@@ -611,10 +640,7 @@ class BleController extends GetxController {
     }
   }
 
-  /// Request data from the device
-  Future<bool> requestData() async {
-    return await _sendCommand('data\n');
-  }
+
 
   /// Send data command and wait for response
   Future<List<SensorReading>> sendDataCommand(String deviceId) async {

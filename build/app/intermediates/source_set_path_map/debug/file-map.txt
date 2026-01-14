@@ -42,6 +42,8 @@ com.iotdevicemanager.flutter.app-packageDebugResources-40 /Users/agnext_dev/Down
 com.iotdevicemanager.flutter.app-packageDebugResources-41 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/intermediates/incremental/debug/packageDebugResources/stripped.dir
 com.iotdevicemanager.flutter.app-merged_res-42 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/app/intermediates/merged_res/debug
 com.iotdevicemanager.flutter.app-packaged_res-43 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/flutter_blue_plus_android/intermediates/packaged_res/debug
-com.iotdevicemanager.flutter.app-packaged_res-44 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/permission_handler_android/intermediates/packaged_res/debug
-com.iotdevicemanager.flutter.app-packaged_res-45 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/shared_preferences_android/intermediates/packaged_res/debug
-com.iotdevicemanager.flutter.app-packaged_res-46 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/sqflite_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-44 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/path_provider_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-45 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/permission_handler_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-46 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-47 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/shared_preferences_android/intermediates/packaged_res/debug
+com.iotdevicemanager.flutter.app-packaged_res-48 /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/sqflite_android/intermediates/packaged_res/debug

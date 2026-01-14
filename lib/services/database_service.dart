@@ -296,4 +296,54 @@ class DatabaseService {
   Future<List<Device>> getAllDevices() async {
     return await getDevices();
   }
+
+  // Get trip by ID
+  Future<Map<String, dynamic>?> getTripById(int tripId) async {
+    final maps = await db.query('trips', where: 'id = ?', whereArgs: [tripId]);
+    if (maps.isEmpty) return null;
+    return maps.first;
+  }
+
+  // Get sensors for a trip
+  Future<List<String>> getTripSensorIds(int tripId) async {
+    final maps = await db.query(
+      'trip_sensors',
+      where: 'tripId = ?',
+      whereArgs: [tripId],
+    );
+    return maps.map((map) => map['deviceId'] as String).toList();
+  }
+
+  // Get readings for multiple devices within a time range
+  Future<List<SensorReading>> getReadingsForDevicesInRange({
+    required List<String> deviceIds,
+    int? startTimestamp,
+    int? endTimestamp,
+  }) async {
+    if (deviceIds.isEmpty) return [];
+    
+    final placeholders = deviceIds.map((_) => '?').join(',');
+    String where = 'deviceId IN ($placeholders)';
+    List<dynamic> whereArgs = deviceIds;
+    
+    if (startTimestamp != null && endTimestamp != null) {
+      where += ' AND timestamp >= ? AND timestamp <= ?';
+      whereArgs = [...deviceIds, startTimestamp, endTimestamp];
+    } else if (startTimestamp != null) {
+      where += ' AND timestamp >= ?';
+      whereArgs = [...deviceIds, startTimestamp];
+    } else if (endTimestamp != null) {
+      where += ' AND timestamp <= ?';
+      whereArgs = [...deviceIds, endTimestamp];
+    }
+    
+    final maps = await db.query(
+      'sensor_readings',
+      where: where,
+      whereArgs: whereArgs,
+      orderBy: 'timestamp ASC',
+    );
+    
+    return maps.map((map) => SensorReading.fromMap(map)).toList();
+  }
 }

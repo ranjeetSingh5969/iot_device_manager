@@ -1,7 +1,9 @@
 -- Merging decision tree log ---
 application
-INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:18:5-43:19
-INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:18:5-43:19
+INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:22:5-47:19
+INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:22:5-47:19
+MERGED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:7:5-33:19
+MERGED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:7:5-33:19
 MERGED from [androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:22:5-29:19
 MERGED from [androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:22:5-29:19
 MERGED from [androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
@@ -19,19 +21,21 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/agne
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:19:9-43
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:23:9-43
 	android:icon
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:21:9-43
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:25:9-43
 	android:name
 		INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:9-42
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:24:9-42
 manifest
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-51:12
-INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-51:12
-INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-51:12
-INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-51:12
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-55:12
+INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-55:12
+INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-55:12
+INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:2:1-55:12
+MERGED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-35:12
 MERGED from [:shared_preferences_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/shared_preferences_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_blue_plus_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/flutter_blue_plus_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:path_provider_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/path_provider_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:permission_handler_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:sqflite_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/sqflite_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.preference:preference:1.2.1] /Users/agnext_dev/.gradle/caches/transforms-3/bf7e05d0e1a43384e25cc75c5d0c0f31/transformed/preference-1.2.1/AndroidManifest.xml:17:1-24:12
@@ -70,14 +74,13 @@ MERGED from [androidx.lifecycle:lifecycle-runtime:2.7.0] /Users/agnext_dev/.grad
 MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:17:1-35:12
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/agnext_dev/.gradle/caches/transforms-3/a042cc023d14741731ef03baf3870f48/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/agnext_dev/.gradle/caches/transforms-3/fdc06e9454ef9757ded46041baae3993/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.datastore:datastore-preferences-core-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/7bfa6bcfd7d83a03b6f32c33bbbd6cdc/transformed/jetified-datastore-preferences-core-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.datastore:datastore-core-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/3de52418b7d26f521aa688645f272d14/transformed/jetified-datastore-core-release/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.datastore:datastore-preferences-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/b4fd9899f9c1f8af2cb4f6696d8e1e83/transformed/jetified-datastore-preferences-release/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.datastore:datastore-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/23e1469b244f7a39d787a7cdeb8a995f/transformed/jetified-datastore-release/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.tracing:tracing:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/be92f2ac600ba5bb2eb5b4d3a4fdf866/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/9b90cb823e4308a138baf484f6cd6206/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/9dcc5b0844530f27faabd7956d51158b/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -86,6 +89,7 @@ MERGED from [androidx.window.extensions.core:core:1.0.0] /Users/agnext_dev/.grad
 MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/b2ec015963f7a092d38a036ded55760e/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/365cf1f7c307b1d0a2da0b9d98b0aeb5/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/c30880cefba3bf5c444b9d445b01310c/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] /Users/agnext_dev/.gradle/caches/transforms-3/02f317dc2bc1da061cd0201d26cc97aa/transformed/jetified-relinker-1.4.5/AndroidManifest.xml:2:1-7:12
 	package
 		INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml
@@ -129,72 +133,88 @@ uses-permission#android.permission.INTERNET
 ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:13:5-66
 	android:name
 		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:13:22-64
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:5-107
+	android:maxSdkVersion
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:79-105
+	android:name
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:17:5-106
+	android:maxSdkVersion
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:17:78-104
+	android:name
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:17:22-77
 uses-feature#android.hardware.bluetooth_le
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:5-89
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:5-89
 	android:required
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:64-87
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:64-87
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:19-63
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:19-63
 queries
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:45:5-50:15
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:49:5-54:15
 intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:46:9-49:18
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:50:9-53:18
 action#android.intent.action.PROCESS_TEXT
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:47:13-72
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:51:13-72
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:47:21-70
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:51:21-70
 data
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:48:13-50
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:52:13-50
 	android:mimeType
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:48:19-48
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:52:19-48
 activity#com.iotdevicemanager.flutter.MainActivity
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:22:9-39:20
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:26:9-43:20
 	android:launchMode
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:25:13-43
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:29:13-43
 	android:hardwareAccelerated
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:29:13-47
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:33:13-47
 	android:windowSoftInputMode
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:30:13-55
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:34:13-55
 	android:exported
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:24:13-36
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:28:13-36
 	android:configChanges
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:28:13-163
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:32:13-163
 	android:theme
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:27:13-47
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:31:13-47
 	android:taskAffinity
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:26:13-36
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:30:13-36
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:23:13-41
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:27:13-41
 meta-data#io.flutter.embedding.android.NormalTheme
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:31:13-34:17
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:35:13-38:17
 	android:resource
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:33:15-52
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:37:15-52
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:32:15-70
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:36:15-70
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:35:13-38:29
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:39:13-42:29
 action#android.intent.action.MAIN
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:36:17-68
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:40:17-68
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:36:25-66
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:40:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:37:17-76
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:41:17-76
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:37:27-74
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:41:27-74
 meta-data#flutterEmbedding
-ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:40:9-42:33
+ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:44:9-46:33
 	android:value
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:42:13-30
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:46:13-30
 	android:name
-		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:41:13-44
+		ADDED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:45:13-44
 uses-sdk
 INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml
 INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml
+MERGED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/shared_preferences_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/shared_preferences_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_blue_plus_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/flutter_blue_plus_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-44
 MERGED from [:flutter_blue_plus_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/flutter_blue_plus_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-44
+MERGED from [:path_provider_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/path_provider_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/path_provider_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:sqflite_android] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/sqflite_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
@@ -271,6 +291,12 @@ MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/agnext_dev/.gradle
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/agnext_dev/.gradle/caches/transforms-3/a042cc023d14741731ef03baf3870f48/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/agnext_dev/.gradle/caches/transforms-3/fdc06e9454ef9757ded46041baae3993/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/agnext_dev/.gradle/caches/transforms-3/fdc06e9454ef9757ded46041baae3993/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.datastore:datastore-preferences-core-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/7bfa6bcfd7d83a03b6f32c33bbbd6cdc/transformed/jetified-datastore-preferences-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.datastore:datastore-preferences-core-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/7bfa6bcfd7d83a03b6f32c33bbbd6cdc/transformed/jetified-datastore-preferences-core-release/AndroidManifest.xml:5:5-44
 MERGED from [androidx.datastore:datastore-core-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/3de52418b7d26f521aa688645f272d14/transformed/jetified-datastore-core-release/AndroidManifest.xml:5:5-44
@@ -279,14 +305,6 @@ MERGED from [androidx.datastore:datastore-preferences-android:1.1.7] /Users/agne
 MERGED from [androidx.datastore:datastore-preferences-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/b4fd9899f9c1f8af2cb4f6696d8e1e83/transformed/jetified-datastore-preferences-release/AndroidManifest.xml:20:5-44
 MERGED from [androidx.datastore:datastore-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/23e1469b244f7a39d787a7cdeb8a995f/transformed/jetified-datastore-release/AndroidManifest.xml:20:5-44
 MERGED from [androidx.datastore:datastore-android:1.1.7] /Users/agnext_dev/.gradle/caches/transforms-3/23e1469b244f7a39d787a7cdeb8a995f/transformed/jetified-datastore-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/a5b1863617994ac272862b4f116ecba6/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.tracing:tracing:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.tracing:tracing:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/419272a0610f054395b4832bdaf188a5/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/be92f2ac600ba5bb2eb5b4d3a4fdf866/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/be92f2ac600ba5bb2eb5b4d3a4fdf866/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/agnext_dev/.gradle/caches/transforms-3/9b90cb823e4308a138baf484f6cd6206/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
@@ -303,12 +321,42 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/365cf1f7c307b1d0a2da0b9d98b0aeb5/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.print:print:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/c30880cefba3bf5c444b9d445b01310c/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.print:print:1.0.0] /Users/agnext_dev/.gradle/caches/transforms-3/c30880cefba3bf5c444b9d445b01310c/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/agnext_dev/.gradle/caches/transforms-3/cd1018a543cec2b9a0fea0c295133a68/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
 MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] /Users/agnext_dev/.gradle/caches/transforms-3/02f317dc2bc1da061cd0201d26cc97aa/transformed/jetified-relinker-1.4.5/AndroidManifest.xml:5:5-43
 MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] /Users/agnext_dev/.gradle/caches/transforms-3/02f317dc2bc1da061cd0201d26cc97aa/transformed/jetified-relinker-1.4.5/AndroidManifest.xml:5:5-43
 	android:targetSdkVersion
 		INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml
+provider#dev.fluttercommunity.plus.share.ShareFileProvider
+ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-21:20
+	android:grantUriPermissions
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:17:13-47
+	android:authorities
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-74
+	android:exported
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-37
+	android:name
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-77
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:18:13-20:68
+	android:resource
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:20:17-65
+	android:name
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:19:17-67
+receiver#dev.fluttercommunity.plus.share.SharePlusPendingIntent
+ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:26:9-32:20
+	android:exported
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:27:13-82
+intent-filter#action:name:EXTRA_CHOSEN_COMPONENT
+ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:29:13-31:29
+action#EXTRA_CHOSEN_COMPONENT
+ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:30:17-65
+	android:name
+		ADDED from [:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:30:25-62
 uses-library#androidx.window.extensions
 ADDED from [androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
 	android:required

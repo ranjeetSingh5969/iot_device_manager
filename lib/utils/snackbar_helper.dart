@@ -33,11 +33,12 @@ class SnackbarHelper {
     );
   }
 
-  static void showSuccess(String message, {String title = 'Success'}) {
+  static void showSuccess(String message, {String title = 'Success', Duration? duration}) {
     show(
       title: title,
       message: message,
       isError: false,
+      duration: duration ?? const Duration(seconds: 3),
     );
   }
 

@@ -42,166 +42,218 @@
 26-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:13:5-66
 26-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:13:22-64
 27
-28    <!-- BLE feature -->
-29    <uses-feature
-29-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:5-89
-30        android:name="android.hardware.bluetooth_le"
-30-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:19-63
-31        android:required="true" />
-31-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:64-87
-32
-33    <queries>
-33-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:45:5-50:15
-34        <intent>
-34-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:46:9-49:18
-35            <action android:name="android.intent.action.PROCESS_TEXT" />
-35-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:47:13-72
-35-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:47:21-70
-36
-37            <data android:mimeType="text/plain" />
-37-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:48:13-50
-37-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:48:19-48
-38        </intent>
-39    </queries>
+28    <!-- Storage permission for downloading CSV files (Android 10 and below) -->
+29    <uses-permission
+29-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:5-107
+30        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+30-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:22-78
+31        android:maxSdkVersion="29" />
+31-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:16:79-105
+32    <uses-permission
+32-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:17:5-106
+33        android:name="android.permission.READ_EXTERNAL_STORAGE"
+33-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:17:22-77
+34        android:maxSdkVersion="29" />
+34-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:17:78-104
+35
+36    <!-- BLE feature -->
+37    <uses-feature
+37-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:5-89
+38        android:name="android.hardware.bluetooth_le"
+38-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:19-63
+39        android:required="true" />
+39-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:64-87
 40
-41    <permission
-41-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
-42        android:name="com.iotdevicemanager.flutter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-42-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
-43        android:protectionLevel="signature" />
-43-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+41    <queries>
+41-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:49:5-54:15
+42        <intent>
+42-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:50:9-53:18
+43            <action android:name="android.intent.action.PROCESS_TEXT" />
+43-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:51:13-72
+43-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:51:21-70
 44
-45    <uses-permission android:name="com.iotdevicemanager.flutter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-45-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
-45-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
-46
-47    <application
-48        android:name="android.app.Application"
-48-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:20:9-42
-49        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-49-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
-50        android:debuggable="true"
-51        android:extractNativeLibs="true"
-52        android:icon="@mipmap/ic_launcher"
-52-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:21:9-43
-53        android:label="IoT Device Manager" >
-53-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:19:9-43
-54        <activity
-54-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:22:9-39:20
-55            android:name="com.iotdevicemanager.flutter.MainActivity"
-55-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:23:13-41
-56            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-56-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:28:13-163
-57            android:exported="true"
-57-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:24:13-36
-58            android:hardwareAccelerated="true"
-58-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:29:13-47
-59            android:launchMode="singleTop"
-59-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:25:13-43
-60            android:taskAffinity=""
-60-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:26:13-36
-61            android:theme="@style/LaunchTheme"
-61-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:27:13-47
-62            android:windowSoftInputMode="adjustResize" >
-62-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:30:13-55
-63            <meta-data
-63-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:31:13-34:17
-64                android:name="io.flutter.embedding.android.NormalTheme"
-64-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:32:15-70
-65                android:resource="@style/NormalTheme" />
-65-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:33:15-52
-66
-67            <intent-filter>
-67-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:35:13-38:29
-68                <action android:name="android.intent.action.MAIN" />
-68-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:36:17-68
-68-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:36:25-66
-69
-70                <category android:name="android.intent.category.LAUNCHER" />
-70-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:37:17-76
-70-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:37:27-74
-71            </intent-filter>
-72        </activity>
-73
-74        <meta-data
-74-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:40:9-42:33
-75            android:name="flutterEmbedding"
-75-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:41:13-44
-76            android:value="2" />
-76-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:42:13-30
+45            <data android:mimeType="text/plain" />
+45-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:52:13-50
+45-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:52:19-48
+46        </intent>
+47    </queries>
+48
+49    <permission
+49-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+50        android:name="com.iotdevicemanager.flutter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+50-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+51        android:protectionLevel="signature" />
+51-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+52
+53    <uses-permission android:name="com.iotdevicemanager.flutter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+53-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+53-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+54
+55    <application
+56        android:name="android.app.Application"
+56-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:24:9-42
+57        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+57-->[androidx.core:core:1.13.1] /Users/agnext_dev/.gradle/caches/transforms-3/8d4e8abffbef783c166231ef51d47c7d/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+58        android:debuggable="true"
+59        android:extractNativeLibs="true"
+60        android:icon="@mipmap/ic_launcher"
+60-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:25:9-43
+61        android:label="IoT Device Manager" >
+61-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:23:9-43
+62        <activity
+62-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:26:9-43:20
+63            android:name="com.iotdevicemanager.flutter.MainActivity"
+63-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:27:13-41
+64            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+64-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:32:13-163
+65            android:exported="true"
+65-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:28:13-36
+66            android:hardwareAccelerated="true"
+66-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:33:13-47
+67            android:launchMode="singleTop"
+67-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:29:13-43
+68            android:taskAffinity=""
+68-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:30:13-36
+69            android:theme="@style/LaunchTheme"
+69-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:31:13-47
+70            android:windowSoftInputMode="adjustResize" >
+70-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:34:13-55
+71            <meta-data
+71-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:35:13-38:17
+72                android:name="io.flutter.embedding.android.NormalTheme"
+72-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:36:15-70
+73                android:resource="@style/NormalTheme" />
+73-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:37:15-52
+74
+75            <intent-filter>
+75-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:39:13-42:29
+76                <action android:name="android.intent.action.MAIN" />
+76-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:40:17-68
+76-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:40:25-66
 77
-78        <uses-library
-78-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
-79            android:name="androidx.window.extensions"
-79-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
-80            android:required="false" />
-80-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
-81        <uses-library
-81-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
-82            android:name="androidx.window.sidecar"
-82-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
-83            android:required="false" />
-83-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
-84
-85        <provider
-85-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:24:9-32:20
-86            android:name="androidx.startup.InitializationProvider"
-86-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:25:13-67
-87            android:authorities="com.iotdevicemanager.flutter.androidx-startup"
-87-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:26:13-68
-88            android:exported="false" >
-88-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:27:13-37
-89            <meta-data
-89-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
-90                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-90-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
-91                android:value="androidx.startup" />
-91-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
-92            <meta-data
-92-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
-93                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-93-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
-94                android:value="androidx.startup" />
-94-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
-95        </provider>
-96
-97        <receiver
-97-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
-98            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-98-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
-99            android:directBootAware="false"
-99-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
-100            android:enabled="true"
-100-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
-101            android:exported="true"
-101-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
-102            android:permission="android.permission.DUMP" >
-102-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
-103            <intent-filter>
-103-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
-104                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-104-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
-104-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
-105            </intent-filter>
-106            <intent-filter>
-106-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
-107                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-107-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
-107-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
-108            </intent-filter>
-109            <intent-filter>
-109-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
-110                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-110-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
-110-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
-111            </intent-filter>
-112            <intent-filter>
-112-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
-113                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-113-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
-113-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
-114            </intent-filter>
-115        </receiver>
-116    </application>
-117
-118</manifest>
+78                <category android:name="android.intent.category.LAUNCHER" />
+78-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:41:17-76
+78-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:41:27-74
+79            </intent-filter>
+80        </activity>
+81
+82        <meta-data
+82-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:44:9-46:33
+83            android:name="flutterEmbedding"
+83-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:45:13-44
+84            android:value="2" />
+84-->/Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/android/app/src/main/AndroidManifest.xml:46:13-30
+85        <!--
+86           Declares a provider which allows us to store files to share in
+87           '.../caches/share_plus' and grant the receiving action access
+88        -->
+89        <provider
+89-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-21:20
+90            android:name="dev.fluttercommunity.plus.share.ShareFileProvider"
+90-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-77
+91            android:authorities="com.iotdevicemanager.flutter.flutter.share_provider"
+91-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-74
+92            android:exported="false"
+92-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:16:13-37
+93            android:grantUriPermissions="true" >
+93-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:17:13-47
+94            <meta-data
+94-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:18:13-20:68
+95                android:name="android.support.FILE_PROVIDER_PATHS"
+95-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:19:17-67
+96                android:resource="@xml/flutter_share_file_paths" />
+96-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:20:17-65
+97        </provider>
+98        <!--
+99           This manifest declared broadcast receiver allows us to use an explicit
+100           Intent when creating a PendingItent to be informed of the user's choice
+101        -->
+102        <receiver
+102-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:26:9-32:20
+103            android:name="dev.fluttercommunity.plus.share.SharePlusPendingIntent"
+103-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:27:13-82
+104            android:exported="false" >
+104-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:28:13-37
+105            <intent-filter>
+105-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:29:13-31:29
+106                <action android:name="EXTRA_CHOSEN_COMPONENT" />
+106-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:30:17-65
+106-->[:share_plus] /Users/agnext_dev/Downloads/DeviceConnect 2/flutter-app/build/share_plus/intermediates/merged_manifest/debug/AndroidManifest.xml:30:25-62
+107            </intent-filter>
+108        </receiver>
+109
+110        <uses-library
+110-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
+111            android:name="androidx.window.extensions"
+111-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
+112            android:required="false" />
+112-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
+113        <uses-library
+113-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
+114            android:name="androidx.window.sidecar"
+114-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
+115            android:required="false" />
+115-->[androidx.window:window:1.2.0] /Users/agnext_dev/.gradle/caches/transforms-3/4608d3ae1ca4e3b14c70fa13d138625b/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
+116
+117        <provider
+117-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:24:9-32:20
+118            android:name="androidx.startup.InitializationProvider"
+118-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:25:13-67
+119            android:authorities="com.iotdevicemanager.flutter.androidx-startup"
+119-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:26:13-68
+120            android:exported="false" >
+120-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:27:13-37
+121            <meta-data
+121-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+122                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+122-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+123                android:value="androidx.startup" />
+123-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/agnext_dev/.gradle/caches/transforms-3/27645910c0ca5e1be13cac488ebf2271/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+124            <meta-data
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+125                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+125-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+126                android:value="androidx.startup" />
+126-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+127        </provider>
+128
+129        <receiver
+129-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+130            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+130-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+131            android:directBootAware="false"
+131-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+132            android:enabled="true"
+132-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+133            android:exported="true"
+133-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+134            android:permission="android.permission.DUMP" >
+134-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+135            <intent-filter>
+135-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+136                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+136-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+136-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+137            </intent-filter>
+138            <intent-filter>
+138-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+139                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+139-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+139-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+140            </intent-filter>
+141            <intent-filter>
+141-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+142                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+142-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+142-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+143            </intent-filter>
+144            <intent-filter>
+144-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+145                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+145-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+145-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/agnext_dev/.gradle/caches/transforms-3/11f3841b67011cc83dafaf305ade26e1/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+146            </intent-filter>
+147        </receiver>
+148    </application>
+149
+150</manifest>
